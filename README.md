@@ -1,10 +1,2 @@
-# My Personal Project
-
-## A subtitle
-
-A *bulleted* list:
-- item 1
-- item 2
-- item 3
-
-An example of text with **bold** and *italic* fonts.  
+# Recipe Manager
+The Recipe Manager is a desktop application that allows users to manage recipes and effectively utilize their present ingredients. Users can add new recipes, manage ingredients, browse collections, and add recipes to their favorites. The target users for this application include: people who cook frequently or enjoy cooking, those who want to properly manage their ingredients, those who like to create their own recipes, and professional chefs who need to organize their recipes systematically. This topic inspired me because I am a cooking and baking enthusiast, and I would like to organize and track the recipes I've made and want to collect. Additionally, as a student with a heavy course load, I often forget what ingredients I have in my fridge or at home, leading to expired ingredients. This application can help busy people with work or studies to clearly track their existing ingredients and put them to good use in delicious dishes. 
