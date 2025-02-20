@@ -1,5 +1,6 @@
 package model;
 
+import java.util.HashSet;
 import java.util.Set;
 
 //Represents a shopping list of ingredients
@@ -14,37 +15,35 @@ public class GroceryList {
     //MODIFIES: this
     //EFFECTS: Adds the item to the list if it does not exist.
     public void addItem(String item) {
-        // Stub
+        groceryItems.add(item);
     }
 
     //MODIFIES: this
     //EFFECTS: Removes the item from the grocery list if it exists.
     public void removeItem(String item) {
-        // Stub
+        groceryItems.remove(item);
     }
 
     //EFFECTS: Check if the grocery list contains the specified item. Returns true
     //          if it exists, otherwise, false.
     public boolean hasItem(String item) {
-        // Stub
-        return false;
+        return groceryItems.contains(item);
     }
 
     //REQUIRES: item != null && item is in the grocery list
     //EFFECTS: Removes the item from the grocery list.
     public void checkItemAsBought(String item) {
-        // Stub
+        groceryItems.remove(item);
     }
 
     //REQUIRES:
     //MODIFIES:
     //EFFECTS: Removes all item from grocery list.
     public void clearList() {
-        // Stub
+        groceryItems.clear();
     }
 
     public Set<String> getGroceryItems() {
-        // Stub
-        return null;
+        return new HashSet<>(groceryItems);
     }
 }
