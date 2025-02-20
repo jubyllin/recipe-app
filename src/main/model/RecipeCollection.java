@@ -15,7 +15,7 @@ public class RecipeCollection {
     }
 
     //MODIFIES: this
-    //EFFECTS: Adds the recipe to the collection if it does not exist.
+    //EFFECTS: Adds the recipe to the collection if it does not exists.
     public void addRecipe(Recipe recipe) {
         recipes.add(recipe);
     }
