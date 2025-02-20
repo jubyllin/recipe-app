@@ -1,16 +1,17 @@
 package model;
+
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.HashMap;
+import java.util.Set;
+
 
 //Represents a recipe with name, category, ingredients needed,  preparation steps, and images.
 public class Recipe {
     private String name;                         //name of recipe
     private String category;                     //category(cuisine, meal type)
-    private Map<String, Double> ingredients;     //required ingredients
+    private Set<String> ingredients;             //required ingredients
     private List<String> steps;                  //list of preparation steps
-    private List<String> images;                 //images of dish
+    private Set<String> images;                 //images of dish
 
     //Create a new recipe with given name and category.
     public Recipe(String name, String category) {
@@ -20,7 +21,7 @@ public class Recipe {
     //REQUIRES: amount > 0
     //MODIFIES: this
     //EFFECTS: Adds the ingredient to the recipe.
-    public void addIngredient(String name, double amount) {
+    public void addIngredient(String name) {
         // Stub
     }
 
@@ -30,13 +31,6 @@ public class Recipe {
         // Stub
     }
 
-
-    //REQUIRES: newAmount >= 0
-    //MODIFIES: this
-    //EFFECTS: Updates the amount of ingredients specified.
-    public void editIngredientAmount(String name, double newAmount) {
-        // Stub
-    }
 
     //MODIFIES: this
     //EFFECTS: Adds a step to the list of preparation steps.
@@ -59,7 +53,7 @@ public class Recipe {
 
     //MODIFIES: this
     //EFFECTS: Removes an image path to the list of images in the recipe.
-    public void removeImage(int index) {
+    public void removeImage(String imagePath) {
         // Stub
     }
 
@@ -80,7 +74,7 @@ public class Recipe {
         return null;
     }
 
-    public Map<String, Double> getIngredients() {
+    public Set<String> getIngredients() {
         // Stub
         return null;
     }
@@ -90,7 +84,7 @@ public class Recipe {
         return null;
     }
 
-    public List<String> getImages() {
+    public Set<String> getImages() {
         // Stub
         return null;
     }
