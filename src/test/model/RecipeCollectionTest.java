@@ -1,0 +1,99 @@
+package model;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import java.util.List;
+import java.util.Set;
+
+public class RecipeCollectionTest {
+    private RecipeCollectionTest testrecipecollection;
+    private Recipe recipe1;
+    private Recipe recipe2;
+
+    @BeforeEach
+    void runBefore() {
+        testrecipecollection = new RecipeCollectionTest();
+        recipe1 = new Recipe("Pancake", "Breakfast");
+        recipe2 = new Recipe("Mapo tofu", "Chinese");
+    }
+
+    @Test
+    void testConstructor() {
+        Set<Recipe> recipes = testrecipecollection.getRecipes();
+
+        assertEquals(0, recipes.size());
+        assertTrue(recipes.isEmpty());
+    }
+
+    @Test
+    void testAddRecipe() {
+        testrecipecollection.addRecipe(recipe1);
+        testrecipecollection.addRecipe(recipe2);
+        
+        Set<Recipe> recipes = testrecipecollection.getRecipes();
+
+        assertEquals(2, recipes.size());
+        assertTrue(recipes.contains(recipe1));
+        assertTrue(recipes.contains(recipe2));
+    }
+
+    @Test
+    void testDuplicateRecipe() {
+        testrecipecollection.addRecipe(recipe1);
+        testrecipecollection.addRecipe(recipe1);
+
+        Set<Recipe> recipes = testrecipecollection.getRecipes();
+
+        assertEquals(1, recipes.size());
+    }
+
+    @Test
+    void testRemoveRecipe() {
+        testrecipecollection.addRecipe(recipe1);
+        testrecipecollection.addRecipe(recipe2);    
+        testrecipecollection.removeRecipe(recipe1);
+
+        Set<Recipe> recipes = testrecipecollection.getRecipes();
+
+        assertEquals(1, recipes.size());
+        assertTrue(recipes.contains(recipe2));
+        assertFalse(recipes.contains(recipe1));
+    }
+
+    @Test
+    void testSearchRecipeByName() {
+        testrecipecollection.addRecipe(recipe1);
+        testrecipecollection.addRecipe(recipe2);
+
+        List<Recipe> results = testrecipecollection.searchRecipeByName("Pancake");
+
+        assertEquals(1, results.size());
+        assertTrue(results.contains(recipe1));
+        assertEquals("Pancake", results.get(0).getName());
+    }
+
+    @Test
+    void testSearchRecipeByIngredients() {
+        recipe1.addIngredient("Flour");
+        recipe1.addIngredient("Milk");
+        recipe2.addIngredient("Tofu");
+
+        testrecipecollection.addRecipe(recipe1);
+        testrecipecollection.addRecipe(recipe2);
+
+        List<Recipe> results = testrecipecollection.searchRecipeByIngredient("Milk");
+
+        assertEquals(1, results.size());
+        assertTrue(results.contains(recipe1));
+        assertEquals("Pancake", results.get(0).getName());
+
+        results = testrecipecollection.testSearchRecipeByIngredients("Tofu");
+
+        assertEquals(1, results.size());
+        assertTrue(results.contains(recipe2));
+        assertEquals("Mapo tofu", results.get(0).getName());
+    }
+}
