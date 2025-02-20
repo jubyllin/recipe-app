@@ -14,14 +14,14 @@ public class IngredientListTest {
         testIngredientList = new IngredientList();
     }
 
-
     @Test
     void testConstructor() {
         Set<String> ingredients = testIngredientList.getIngredients();
-        
-        assertTrue(ingredients.isEmpty());
-        assertEquals(0, ingredients.size());
+    
+        assertTrue(ingredients.isEmpty()); 
+        assertEquals(0, ingredients.size()); 
     }
+    
 
     @Test
     void testAddIngredient() {
