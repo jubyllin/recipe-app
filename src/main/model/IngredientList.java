@@ -7,7 +7,7 @@ import java.util.Set;
 public class IngredientList {
     private Set<String> ingredients;   //a list of ingredient names
 
-    //Create an empty IngredientList.
+    //Creates an empty IngredientList.
     public IngredientList() {
         this.ingredients = new HashSet<>();
     }
