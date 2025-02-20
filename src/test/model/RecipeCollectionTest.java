@@ -9,13 +9,13 @@ import java.util.List;
 import java.util.Set;
 
 public class RecipeCollectionTest {
-    private RecipeCollectionTest testrecipecollection;
+    private RecipeCollection testrecipecollection;
     private Recipe recipe1;
     private Recipe recipe2;
 
     @BeforeEach
     void runBefore() {
-        testrecipecollection = new RecipeCollectionTest();
+        testrecipecollection = new RecipeCollection();
         recipe1 = new Recipe("Pancake", "Breakfast");
         recipe2 = new Recipe("Mapo tofu", "Chinese");
     }
@@ -90,7 +90,7 @@ public class RecipeCollectionTest {
         assertTrue(results.contains(recipe1));
         assertEquals("Pancake", results.get(0).getName());
 
-        results = testrecipecollection.testSearchRecipeByIngredients("Tofu");
+        results = testrecipecollection.searchRecipeByIngredient("Tofu");
 
         assertEquals(1, results.size());
         assertTrue(results.contains(recipe2));
