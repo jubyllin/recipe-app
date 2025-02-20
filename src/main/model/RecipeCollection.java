@@ -1,5 +1,7 @@
 package model;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -9,39 +11,47 @@ public class RecipeCollection {
 
     //Creates an empty RecipeCollection.
     public RecipeCollection() {
-        // Stub
+        this.recipes = new HashSet<>();
     }
 
     //MODIFIES: this
     //EFFECTS: Adds the recipe to the collection if it does not exist.
-    public void addRecipe(String name) {
-        // Stub
+    public void addRecipe(Recipe recipe) {
+        recipes.add(recipe);
     }
 
     //MODIFIES: this
     //EFFECTS: Removes the recipe from the collection if it exists.
-    public void removeRecipe(String name) {
-        // Stub
+    public void removeRecipe(Recipe recipe) {
+        recipes.remove(recipe);
 
     }
 
 
     //EFFECTS: Returns a list of recipes that include the specified name.
     public List<Recipe> searchRecipeByName(String name) {
-        // Stub
-        return null;
-
+        List<Recipe> results = new ArrayList<>();
+        for (Recipe recipe : recipes) {
+            if (recipe.getName().equalsIgnoreCase(name)) {
+                results.add(recipe);
+            }
+        }
+        return results;
     } 
 
     //EFFECTS: Returns a list of recipes that include the specified ingredient.
     public List<Recipe> searchRecipeByIngredient(String ingredient) {
-        // Stub
-        return null;
+        List<Recipe> results = new ArrayList<>();
+        for (Recipe recipe : recipes) {
+            if (recipe.getIngredients().contains(ingredient)) {
+                results.add(recipe);
+            }
+        }
+        return results;    
     }
 
     public Set<Recipe> getRecipes() {
-        // Stub
-        return null;
+        return new HashSet<>(recipes);
     }
     
 }
