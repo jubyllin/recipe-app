@@ -1,6 +1,7 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -15,77 +16,80 @@ public class Recipe {
 
     //Create a new recipe with given name and category.
     public Recipe(String name, String category) {
-        // Stub
+        this.name = name;
+        this.category = category;
+        this.ingredients = new HashSet<>();
+        this.steps = new ArrayList<>();
+        this.images = new HashSet<>();
     } 
 
     //REQUIRES: amount > 0
     //MODIFIES: this
     //EFFECTS: Adds the ingredient to the recipe.
     public void addIngredient(String name) {
-        // Stub
+        ingredients.add(name);
     }
 
     //MODIFIES: this
     //EFFECTS: Removes the ingredient from the recipe.
     public void removeIngredient(String name) {
-        // Stub
+        ingredients.remove(name);
     }
 
 
     //MODIFIES: this
     //EFFECTS: Adds a step to the list of preparation steps.
     public void addStep(String step){
-        // Stub
+        steps.add(step);
     }
 
     //MODIFIES: this
     //EFFECTS: Remove a step from the list of preparatino steps.
     public void removeStep(String step){
-        // Stub
+        steps.remove(step);
     }
 
 
     //MODIFIES: this
     //EFFECTS: Adds an image path to the list of images in the recipe.
     public void addImage(String imagePath) {
-        // Stub
+        images.add(imagePath);
     }
 
     //MODIFIES: this
     //EFFECTS: Removes an image path to the list of images in the recipe.
     public void removeImage(String imagePath) {
-        // Stub
+        images.remove(imagePath);
     }
 
     //EFFECTS: Checks if this recipe can be made through existing home ingredients. 
     //          Returns true if all ingredients are available, otherwise, false.
     public boolean canMakeRecipe(IngredientList ingredientList) {
-        // Stub
-        return false;
+        for (String ingredient : ingredients) {
+            if (!ingredientList.hasIngredient(ingredient)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     public String getName() {
-        // Stub
-        return null;
+        return name;
     }
     
     public String getCategory() {
-        // Stub
-        return null;
+        return category;
     }
 
     public Set<String> getIngredients() {
-        // Stub
-        return null;
+        return new HashSet<>(ingredients);
     }
 
     public List<String> getSteps() {
-        // Stub
-        return null;
+        return new ArrayList<>(steps);
     }
 
     public Set<String> getImages() {
-        // Stub
-        return null;
+        return new HashSet<>(images);
     }
 }
