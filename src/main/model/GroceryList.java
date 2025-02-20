@@ -1,6 +1,5 @@
 package model;
 
-import java.util.HashSet;
 import java.util.Set;
 
 //Represents a shopping list of ingredients
@@ -40,7 +39,7 @@ public class GroceryList {
     //REQUIRES:
     //MODIFIES:
     //EFFECTS: Removes all item from grocery list.
-    public void clearList(String item) {
+    public void clearList() {
         // Stub
     }
 
