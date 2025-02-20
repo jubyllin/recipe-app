@@ -14,22 +14,23 @@ public class IngredientList {
     //REQUIRES: name != null
     //MODIFIES: this
     //EFFECTS: Add the ingredient to the ingredient list if it does not exist.
-    public void addIngredient() {
+    public void addIngredient(String name) {
         // Stub
     }
 
     //REQUIRES: name != null
     //MODIFIES: this
     //EFFECTS: Removes the ingredient from the ingredient list if it exists.
-    public void removeIngredient() {
+    public void removeIngredient(String name) {
         // Stub
     }
 
     //REQUIRES: name != null
     //EFFECTS: Checks if the ingredient is in the list. Returns true if the ingredient exists, 
     //          otherwise, false.
-    public void hasIngredient() {
+    public boolean hasIngredient(String name) {
         // Stub
+        return false;
     }
 
 

@@ -39,15 +39,16 @@ public class Recipe {
 
     //MODIFIES: this
     //EFFECTS: Adds a step to the list of preparation steps.
-    public void addStep(String step){
+    public void addStep(String step) {
         steps.add(step);
     }
 
     //MODIFIES: this
     //EFFECTS: Remove a step from the list of preparatino steps.
-    public void removeStep(String step){
+    public void removeStep(String step) {
         steps.remove(step);
     }
+
 
 
     //MODIFIES: this
