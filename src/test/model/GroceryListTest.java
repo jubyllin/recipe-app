@@ -31,7 +31,7 @@ public class GroceryListTest {
 
         assertEquals(2, groceryItems.size());
         assertTrue(groceryItems.contains("Garlic"));
-        assertTrue(groceryItems.contains("Onions"));
+        assertTrue(groceryItems.contains("Onion"));
     }
     
     @Test

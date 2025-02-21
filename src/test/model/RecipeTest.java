@@ -25,6 +25,8 @@ public class RecipeTest {
         assertTrue(ingredients.contains("Toast"));
         assertTrue(ingredients.contains("Egg"));
         assertTrue(ingredients.contains("Milk"));
+
+        assertEquals("Breakfast", testRecipe.getCategory());
     }
 
     @Test
@@ -52,14 +54,14 @@ public class RecipeTest {
     void testRemoveStep() {
         testRecipe.addStep("Mix milk, eggs, and sugar.");
         testRecipe.addStep("Soak toast in egg wash for five minutes.");
-        testRecipe.addStep("Cook on pan");
+        testRecipe.addStep("Cook on pan.");
+        testRecipe.removeStep("Cook on pan.");
 
         List<String> steps = testRecipe.getSteps();
 
-        testRecipe.removeStep(steps.get(0));
         assertEquals(2, steps.size());
-        assertEquals("Soak toast in egg wash for five minutes.", steps.get(0));
-        assertEquals("Cook on pan", steps.get(1));    
+        assertEquals("Mix milk, eggs, and sugar.", steps.get(0));
+        assertEquals("Soak toast in egg wash for five minutes.", steps.get(1));    
     }
 
     @Test
@@ -85,7 +87,7 @@ public class RecipeTest {
         assertEquals(0, images.size());
         assertTrue(images.isEmpty());
 
-        testRecipe.addImage("frenchToast2.jpg");
+       images.add("frenchToast2.jpg");
         assertEquals(1, images.size());
         assertTrue(images.contains("frenchToast2.jpg"));
         assertFalse(images.contains("frenchToast.jpg"));

@@ -9,7 +9,7 @@ public class GroceryList {
 
     //Constructs an empty GroceryList.
     public GroceryList() {
-        // Stub
+        this.groceryItems = new HashSet<>();
     }
     
     //MODIFIES: this

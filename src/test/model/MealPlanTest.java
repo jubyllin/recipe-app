@@ -37,8 +37,8 @@ public class MealPlanTest {
         Map<String, List<Recipe>> schedule = testMealPlan.getMealPlan();
 
         assertEquals(2, schedule.size());
-        assertEquals(recipe1, schedule.containsKey("Monday"));
-        assertEquals(recipe2, schedule.containsKey("Tuesday"));
+        assertTrue(schedule.containsKey("Monday"));
+        assertTrue(schedule.containsKey("Tuesday"));
     }
 
     @Test
@@ -65,6 +65,13 @@ public class MealPlanTest {
         assertTrue(sundayMeals.contains(recipe3));
         assertFalse(sundayMeals.contains(recipe1));
     }
+
+    @Test
+    void testRemoveSpecificMealFromEmptyDay() {
+        testMealPlan.removeSpecificMeal("Thursday", recipe1); 
+        assertTrue(testMealPlan.getMealPlan().isEmpty()); 
+    }
+
 
     @Test
     void testRemoveMeal() {
