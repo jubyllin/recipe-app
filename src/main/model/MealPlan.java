@@ -28,8 +28,8 @@ public class MealPlan {
     public void removeSpecificMeal(String day, Recipe recipe) {
         if (mealSchedule.containsKey(day)) {
             mealSchedule.get(day).remove(recipe);
-            }
         }
+    }
         
     //MODIFIES: this
     //EFFECTS: Removes all meals assigned to the specified day.
