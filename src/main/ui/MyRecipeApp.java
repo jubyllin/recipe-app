@@ -11,7 +11,7 @@ public class MyRecipeApp {
     private Scanner input;
 
     // Initializes the appplication.
-    private MyRecipeApp() {
+    public MyRecipeApp() {
         recipeCollection = new RecipeCollection();
         groceryList = new GroceryList();
         mealPlan = new MealPlan();
@@ -137,7 +137,6 @@ public class MyRecipeApp {
         System.out.print("Enter the name of the recipe to add to My Recipe Collection: ");
         String name = input.nextLine();
 
-        Recipe foundRecipe = null;
         for (Recipe recipe : recipeCollection.getRecipes()) {
             if (recipe.getName().equalsIgnoreCase(name)) {
                 System.out.println("Recipe is already in the collection.");
@@ -255,21 +254,6 @@ public class MyRecipeApp {
                 for (Recipe recipe : schedule.get(day)) {
                     System.out.println("  。 " + recipe.getName());
                 }
-            }
-        }
-    }
-
-    // EFFECTS: Displays the meal plan of a specified day.
-    private void viewMealPlanOfSpecificDay() {
-        System.out.print("Enter the day: ");
-        String day = input.nextLine();
-        List<Recipe> meals = mealPlan.getMeals(day);
-        if (meals.isEmpty()) {
-            System.out.println("No meals planned for this day.");
-        } else {
-            System.out.println("\nMeals for " + day + ":");
-            for (Recipe recipe : meals) {
-                System.out.println("。 " + recipe.getName());
             }
         }
     }
