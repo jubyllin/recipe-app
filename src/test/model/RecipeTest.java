@@ -86,8 +86,8 @@ public class RecipeTest {
 
         assertEquals(0, images.size());
         assertTrue(images.isEmpty());
-
-       images.add("frenchToast2.jpg");
+        
+        images.add("frenchToast2.jpg");
         assertEquals(1, images.size());
         assertTrue(images.contains("frenchToast2.jpg"));
         assertFalse(images.contains("frenchToast.jpg"));
