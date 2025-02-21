@@ -63,17 +63,6 @@ public class Recipe {
         images.remove(imagePath);
     }
 
-    //EFFECTS: Checks if this recipe can be made through existing home ingredients. 
-    //          Returns true if all ingredients are available, otherwise, false.
-    public boolean canMakeRecipe(IngredientList ingredientList) {
-        for (String ingredient : ingredients) {
-            if (!ingredientList.hasIngredient(ingredient)) {
-                return false;
-            }
-        }
-        return true;
-    }
-
     public String getName() {
         return name;
     }

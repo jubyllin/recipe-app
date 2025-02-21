@@ -37,18 +37,18 @@ public class MyRecipeApp {
     // running, otherwise, false to exit the application.
     private boolean processCommand(String command) {
         executeCommand(command);
-        return true; 
+        return true;
     }
 
-    //MODIFIES: this
-    //EFFECTS: Executes the user command by calling the appropriate method.
+    // MODIFIES: this
+    // EFFECTS: Executes the user command by calling the appropriate method.
     private void executeCommand(String command) {
         switch (command) {
             case "1": addRecipe();
                 break;
             case "2": deleteRecipe();
                 break;
-            case "3": addRecipeToCollection();
+            case "3": viewSelectedRecipe();
                 break;
             case "4": viewRecipeCollection();
                 break;
@@ -64,52 +64,91 @@ public class MyRecipeApp {
                 break;
             case "10": viewMealPlan();
                 break;
-            default: handleInvalidCommand();
+            case "11": exitApp();
         }
     }
 
-    //EFFECTS: Conducts invalid user input.
-    private void handleInvalidCommand() {
-        System.out.println("Invalid selection. Please try again!");
+   // EFFECTS: Prints a goodbye message and exits the application.
+    private void exitApp() {
+        System.out.println("Goodbye;)"); 
+        System.exit(0); 
     }
 
     // EFFECTS: Displays the main menu options to the user.
     private void displayMenu() {
-        System.out.println("\n=== My Recipe App ===");
-        System.out.println("1. Add a Recipe");
-        System.out.println("2. Delete a Recipe");
-        System.out.println("3. Add Recipe to Collection");
-        System.out.println("4. View My Recipe Collection");
-        System.out.println("5. Add Item to Grocery List");
-        System.out.println("6. Mark Item as Bought");
-        System.out.println("7. View Grocery List");
-        System.out.println("8. Add Meal to Meal Plan");
-        System.out.println("9. Delete a Meal");
-        System.out.println("10. View Meal Plan");
-        System.out.println("11. View Meal Plan for a Specific Day");
-        System.out.println("12. Exit");
+        System.out.println("\n✩✩✩✩✩ My Recipe App ✩✩✩✩✩");
+        System.out.println("。1。 Add a Recipe");
+        System.out.println("。2。 Delete a Recipe");
+        System.out.println("。3。 View a Recipe's Details");
+        System.out.println("。4。 View My Recipe Collection");
+        System.out.println("。5。 Add Item to Grocery List");
+        System.out.println("。6。 Mark Item as Bought");
+        System.out.println("。7。 View Grocery List");
+        System.out.println("。8。 Add Meal to Meal Plan");
+        System.out.println("。9。 Delete a Meal");
+        System.out.println("。10。 View Meal Plan");
+        System.out.println("。11。 Exit");
         System.out.print("Select an option: ");
     }
 
     // MODIFIES: this
     // EFFECTS: Conducts adding a new recipe.
     private void addRecipe() {
-        System.out.print("Enter recipe name: ");
-        String name = input.nextLine();
-        System.out.print("Enter category (cuisine, meal type): ");
-        String category = input.nextLine();
-
-        Recipe recipe = new Recipe(name, category);
-
-        while (true) {
-            System.out.print("Add an ingredient: ");
-            String ingredient = input.nextLine();
-            recipe.addIngredient(ingredient);
-            recipeCollection.addRecipe(recipe);
-            System.out.println("Recipe added successfully!");
-        }
-
+        Recipe recipe = createRecipe();
+        addIngredients(recipe); 
+        addSteps(recipe); 
+    
+        recipeCollection.addRecipe(recipe);
+        System.out.println("Recipe added successfully!");
     }
+    
+    // EFFECTS: Creates and returns a new Recipe from the user input.
+    private Recipe createRecipe() {
+        System.out.print("Enter recipe name: ");
+        String name = input.nextLine().trim();
+    
+        System.out.print("Enter category (cuisine, meal type): ");
+        String category = input.nextLine().trim();
+    
+        return new Recipe(name, category);
+    }
+    
+    // MODIFIES: this
+    // EFFECTS: Enables user to input ingredients for a recipe.
+    private void addIngredients(Recipe recipe) {
+        String ingredient;
+        boolean firstInput = true;
+        do {
+            if (firstInput) {
+                System.out.print("Add an ingredient (or press Enter to finish): ");
+                firstInput = false;
+            }
+            ingredient = input.nextLine().trim();
+            if (!ingredient.isEmpty()) {
+                recipe.addIngredient(ingredient);
+                System.out.print("Add another ingredient (or press Enter to finish): ");
+            }
+        } while (!ingredient.isEmpty());
+    }
+    
+    // MODIFIES: this
+    // EFFECTS: Enables user to input steps for a recipe.
+    private void addSteps(Recipe recipe) {
+        String step;
+        boolean firstStepInput = true;
+        do {
+            if (firstStepInput) {
+                System.out.print("Add a preparation step (or press Enter to finish): ");
+                firstStepInput = false;
+            }
+            step = input.nextLine().trim();
+            if (!step.isEmpty()) {
+                recipe.addStep(step);
+                System.out.print("Add another step (or press Enter to finish): ");
+            }
+        } while (!step.isEmpty());
+    }
+    
 
     // MODIFIES: this
     // EFFECTS: Conducts deleting an existing recipe.
@@ -132,42 +171,18 @@ public class MyRecipeApp {
     }
 
     // MODIFIES: this
-    // EFFECTS: Adds the selected recipe to the recipe collection.
-    private void addRecipeToCollection() {
-        System.out.print("Enter the name of the recipe to add to My Recipe Collection: ");
-        String name = input.nextLine();
-
-        for (Recipe recipe : recipeCollection.getRecipes()) {
-            if (recipe.getName().equalsIgnoreCase(name)) {
-                System.out.println("Recipe is already in the collection.");
-                return;
-            }
-        }
-
-        System.out.print("Enter category for the recipe: ");
-        String category = input.nextLine();
-        Recipe newRecipe = new Recipe(name, category);
-
-        while (true) {
-            System.out.print("Add an ingredient (or press Enter to finish): ");
-            String ingredient = input.nextLine();
-            if (ingredient.isEmpty()) {
-                break;
-            }
-            newRecipe.addIngredient(ingredient);
-        }
-
-        recipeCollection.addRecipe(newRecipe);
-        System.out.println("Recipe added to collection successfully!");
-    }
-
-    // MODIFIES: this
     // EFFECT: Conducts adding a new item to the grocery list.
     private void addItemToGroceryList() {
-        System.out.print("Enter item name: ");
-        String item = input.nextLine();
-        groceryList.addItem(item);
-        System.out.println("Item added to grocery list.");
+        System.out.print("Enter grocery items (comma-separated, or press Enter to finish): ");
+        String itemsInput = input.nextLine().trim();
+
+        if (!itemsInput.isEmpty()) {
+            String[] items = itemsInput.split(","); 
+            for (String item : items) {
+                groceryList.addItem(item.trim()); 
+            }
+            System.out.println("Items added successfully!");
+        }
     }
 
     // MODIFIES: this
@@ -212,15 +227,70 @@ public class MyRecipeApp {
         System.out.println("Meal deleted.");
     }
 
+    // EFFECTS: Allows user to select a recipe and displays its details.
+    private void viewSelectedRecipe() {
+        if (recipeCollection.getRecipes().isEmpty()) {
+            System.out.println("No recipes available.");
+            return;
+        }
+
+        System.out.println("Select a recipe:");
+        List<Recipe> recipes = new ArrayList<>(recipeCollection.getRecipes());
+
+        for (int i = 0; i < recipes.size(); i++) {
+            System.out.println((i + 1) + ". " + recipes.get(i).getName());
+        }
+
+        System.out.print("Enter the number of the recipe: ");
+        try {
+            int choice = Integer.parseInt(input.nextLine().trim());
+            if (choice >= 1 && choice <= recipes.size()) {
+                Recipe selectedRecipe = recipes.get(choice - 1);
+                System.out.println();
+                displayRecipeDetails(selectedRecipe); 
+            } else {
+                System.out.println("Invalid selection.");
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("Please enter a valid number.");
+        }
+    }
+
+    // EFFECTS: Displays the selected recipe with its details, including,
+    //              name, category, ingredients, and steps.
+    private void displayRecipeDetails(Recipe recipe) {
+        System.out.println("🥘 Recipe Details 🥘");
+        System.out.println("Name: " + recipe.getName());
+        System.out.println("Category: " + recipe.getCategory());
+
+        System.out.println("\nIngredients:");
+        for (String ingredient : recipe.getIngredients()) {
+            System.out.println("‣ " + ingredient);
+        }
+
+        System.out.println("\nSteps:");
+        int stepNumber = 1;
+        for (String step : recipe.getSteps()) {
+            System.out.println(stepNumber++ + ". " + step);
+        }
+
+        if (!recipe.getImages().isEmpty()) {
+            System.out.println("\nImages:");
+            for (String image : recipe.getImages()) {
+                System.out.println("- " + image);
+            }
+        }
+    }
+
     // EFFECTS: Displays all recipes in the recipe collection.
     private void viewRecipeCollection() {
         Set<Recipe> recipes = recipeCollection.getRecipes();
         if (recipes.isEmpty()) {
             System.out.println("No recipes available.");
         } else {
-            System.out.println("\n=== My Recipe Collection ===");
+            System.out.println("🥢 My Recipe Collection 🥢");
             for (Recipe recipe : recipes) {
-                System.out.println("。 " + recipe.getName() + " (" + recipe.getCategory() + ")");
+                System.out.println("‣ " + recipe.getName() + " [" + recipe.getCategory() + "] ");
             }
         }
     }
@@ -228,14 +298,13 @@ public class MyRecipeApp {
     // EFFECTS: Displays all items in the grocery list.
     private void viewGroceryList() {
         Set<String> items = groceryList.getGroceryItems();
+
         if (items.isEmpty()) {
             System.out.println("Grocery list is empty.");
         } else {
-            System.out.println("\\n"
-                    + //
-                    "=== Grocery List ===");
+            System.out.println("🛍️ Grocery List 🛍️");
             for (String item : items) {
-                System.out.println("。 " + item);
+                System.out.println("‣ " + item);
             }
         }
     }
@@ -246,9 +315,7 @@ public class MyRecipeApp {
         if (schedule.isEmpty()) {
             System.out.println("Meal plan is empty.");
         } else {
-            System.out.println("\\n"
-                    + //
-                    "=== Meal Plan ===");
+            System.out.println("🍴 Meal Plan 🍴");
             for (String day : schedule.keySet()) {
                 System.out.println(day + ":");
                 for (Recipe recipe : schedule.get(day)) {

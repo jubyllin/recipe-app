@@ -93,20 +93,4 @@ public class RecipeTest {
         assertFalse(images.contains("frenchToast.jpg"));
     }
 
-    @Test
-    void testCanMakeRecipe() {
-        IngredientList ingredientList = new IngredientList();
-        ingredientList.addIngredient("Toast");
-        ingredientList.addIngredient("Egg");
-        ingredientList.addIngredient("Milk");
-
-        testRecipe.addIngredient("Toast");
-        testRecipe.addIngredient("Egg");
-        testRecipe.addIngredient("Milk");
-
-        assertTrue(testRecipe.canMakeRecipe(ingredientList));
-
-        testRecipe.addIngredient("Butter");
-        assertFalse(testRecipe.canMakeRecipe(ingredientList));
-    }
 }
