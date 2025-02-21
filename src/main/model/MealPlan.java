@@ -2,6 +2,7 @@ package model;
 
 import java.util.Map;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 //Represents a weekly meal plan.
@@ -10,25 +11,30 @@ public class MealPlan {
 
     //Creates an empty meal plan.
     public MealPlan() {
-        // Stub
+        this.mealSchedule = new HashMap<>();
     }
 
     //MODIFIES: this
     //EFFECTS: Adds a recipe to a specific day in the meal plan.
     public void addMeal(String day, Recipe recipe) {
-        // Stub
+        if (!mealSchedule.containsKey(day)) {
+            mealSchedule.put(day, new ArrayList<>());
+        }
+        mealSchedule.get(day).add(recipe);
     }
 
     //MODIFIES: this
     //EFFECTS: Removes a specified meal from the day in the meal plan.
     public void removeSpecificMeal(String day, Recipe recipe) {
-        // Stub
-    }
-    
+        if (mealSchedule.containsKey(day)) {
+            mealSchedule.get(day).remove(recipe);
+            }
+        }
+        
     //MODIFIES: this
     //EFFECTS: Removes all meals assigned to the specified day.
     public void removeMeal(String day) {
-        // Stub
+        mealSchedule.remove(day);
     }
 
 
@@ -36,18 +42,18 @@ public class MealPlan {
     //MODIFIES: this
     //EFFECTS: Reset the weekly meal plan to empty.
     public void clearMealPlan() {
-        // Stub
+        mealSchedule.clear();
     }
 
     public List<Recipe> getMeals(String day) {
-        // Stub
-        return null;
+        if (mealSchedule.containsKey(day)) {
+            return mealSchedule.get(day);
+        } else {
+            return new ArrayList<>();
+        }
     }
     
     public Map<String, List<Recipe>> getMealPlan() {
-        // Stub
-        return null;
+        return new HashMap<>(mealSchedule);
     }
-
-    
 }
