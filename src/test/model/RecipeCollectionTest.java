@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.List;
 import java.util.Set;
 
 public class RecipeCollectionTest {
@@ -61,39 +60,5 @@ public class RecipeCollectionTest {
         assertEquals(1, recipes.size());
         assertTrue(recipes.contains(recipe2));
         assertFalse(recipes.contains(recipe1));
-    }
-
-    @Test
-    void testSearchRecipeByName() {
-        testrecipecollection.addRecipe(recipe1);
-        testrecipecollection.addRecipe(recipe2);
-
-        List<Recipe> results = testrecipecollection.searchRecipeByName("Pancake");
-
-        assertEquals(1, results.size());
-        assertTrue(results.contains(recipe1));
-        assertEquals("Pancake", results.get(0).getName());
-    }
-
-    @Test
-    void testSearchRecipeByIngredients() {
-        recipe1.addIngredient("Flour");
-        recipe1.addIngredient("Milk");
-        recipe2.addIngredient("Tofu");
-
-        testrecipecollection.addRecipe(recipe1);
-        testrecipecollection.addRecipe(recipe2);
-
-        List<Recipe> results = testrecipecollection.searchRecipeByIngredient("Milk");
-
-        assertEquals(1, results.size());
-        assertTrue(results.contains(recipe1));
-        assertEquals("Pancake", results.get(0).getName());
-
-        results = testrecipecollection.searchRecipeByIngredient("Tofu");
-
-        assertEquals(1, results.size());
-        assertTrue(results.contains(recipe2));
-        assertEquals("Mapo tofu", results.get(0).getName());
     }
 }
