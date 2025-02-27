@@ -9,3 +9,5 @@ The *Recipe Manager* is a desktop application that allows users to manage recipe
 - As a user, I want to be able to select a recipe from my collection and view its details.
 - As a user, I want to be able to add and delete meals to customize my meal plan.
 - As a user, I want to be able to add and delete items in the grocery list.
+- As a user, I want to be able to save the entire state of my recipe app, including my recipe, recipe collection, meal plan, and grocery list, when I select the exit option of the application.
+- As a user, I want to be provided the option to load the saved state of my recipe app from a file when I start the application.
