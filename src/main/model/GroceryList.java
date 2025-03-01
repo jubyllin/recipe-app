@@ -3,8 +3,13 @@ package model;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import persistence.Writable;
+
 //Represents a shopping list of ingredients
-public class GroceryList {
+public class GroceryList implements Writable {
     private Set<String> groceryItems;   //a list of item names
 
     //Constructs an empty GroceryList.
@@ -45,5 +50,16 @@ public class GroceryList {
 
     public Set<String> getGroceryItems() {
         return new HashSet<>(groceryItems);
+    }
+
+    @Override
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        JSONArray jsonArray = new JSONArray();
+        for (String item : groceryItems) {
+            jsonArray.put(item);
+        }
+        json.put("groceryItems", jsonArray);
+        return json;
     }
 }
