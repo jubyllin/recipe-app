@@ -5,8 +5,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import persistence.Writable;
+
 //Represents a weekly meal plan.
-public class MealPlan {
+public class MealPlan implements Writable {
     private Map<String, List<Recipe>> mealSchedule;
 
     //Creates an empty meal plan.
@@ -55,5 +60,20 @@ public class MealPlan {
     
     public Map<String, List<Recipe>> getMealPlan() {
         return new HashMap<>(mealSchedule);
+    }
+
+    @Override
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        JSONObject schedule = new JSONObject();
+        for (String day : mealSchedule.keySet()) {
+            JSONArray recipesArray = new JSONArray();
+            for (Recipe recipe : mealSchedule.get(day)) {
+                recipesArray.put(recipe.toJson());
+            }
+            schedule.put(day, recipesArray);
+        }
+        json.put("mealSchedule", schedule);
+        return json;
     }
 }
