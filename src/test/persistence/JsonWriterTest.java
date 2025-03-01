@@ -8,36 +8,58 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 
-class JsonWriterTest {
+public class JsonWriterTest {
     private static final String TEST_FILE = "./data/testRecipeData.json";
+    RecipeCollection recipes = new RecipeCollection();
+    GroceryList groceryList = new GroceryList();
+    MealPlan mealPlan = new MealPlan();
+
 
     @Test
+    void testWriteEmptyRecipeCollection() {
+        try {
+            RecipeCollection recipes = new RecipeCollection();
+            JsonWriter writer = new JsonWriter("./data/testWriteEmptyRecipeCollection.json");
+            writer.open();
+            writer.write(recipes.toJson());
+            writer.close();
+
+            JsonReader reader = new JsonReader("./data/testWriteEmptyRecipeCollection.json");
+            RecipeCollection loadedRecipes = reader.read();
+            assertEquals(0, loadedRecipes.getRecipes().size());
+        } catch (IOException e) {
+            fail("Exception should not be thrown");
+        }
+    }
+    @Test
     void testWriteRecipeCollection() {
-        RecipeCollection recipes = new RecipeCollection();
         recipes.addRecipe(new Recipe("Spaghetti", "Italian"));
-
-        GroceryList groceryList = new GroceryList();
-        groceryList.addItem("Tomatoes");
-        groceryList.addItem("Garlic");
-
-        MealPlan mealPlan = new MealPlan();
-        mealPlan.addMeal("Friday", new Recipe("Spaghetti", "Italian"));
+        recipes.addRecipe(new Recipe("Sushi", "Japanese"));
 
         JsonWriter writer = new JsonWriter(TEST_FILE);
         
         try {
             writer.open();
-
-            JSONObject jsonObject = new JSONObject();
-            jsonObject.put("recipes", recipes.toJson());
-            jsonObject.put("groceryList", groceryList.toJson());
-            jsonObject.put("mealPlan", mealPlan.toJson());
-
-            writer.write(jsonObject);
+            writer.write(recipes.toJson());
             writer.close();
-        } catch (FileNotFoundException e) {
-            fail("File not found!");
+
+            JsonReader reader = new JsonReader("./data/testWriteRecipeCollectionWithRecipes.json");
+            RecipeCollection loadedRecipes = reader.read();
+            assertEquals(2, loadedRecipes.getRecipes().size());
+        } catch (IOException e) {
+        fail("Exception should not be thrown");
         }
     }
+
+    @Test
+    void testWriterInvalidFile() {
+        try {
+            JsonWriter writer = new JsonWriter("./data/invalid\0file.json"); // Invalid filename
+            writer.open();
+            fail("Expected IOException was not thrown");
+        } catch (IOException e) {
+        }
+    }   
 }

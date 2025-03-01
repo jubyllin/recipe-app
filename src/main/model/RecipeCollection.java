@@ -50,7 +50,10 @@ public class RecipeCollection implements Writable {
         JSONObject json = new JSONObject();
         JSONArray jsonArray = new JSONArray();
         for (Recipe recipe : recipes) {
-            jsonArray.put(recipe.toJson());
+            JSONObject recipeJson = new JSONObject();
+            recipeJson.put("name", recipe.getName());
+            recipeJson.put("category", recipe.getCategory());
+            jsonArray.put(recipeJson);
         }
         json.put("recipes", jsonArray);
         return json;
