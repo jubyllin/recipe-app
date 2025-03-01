@@ -17,7 +17,17 @@ public class RecipeCollection implements Writable {
         this.recipes = new HashSet<>();
     }
 
-    
+    //Constructs a RecipeCollection from a given JSON object.
+    public RecipeCollection(JSONObject jsonObject) {
+        this.recipes = new HashSet<>();
+        JSONArray jsonArray = jsonObject.getJSONArray("recipes");
+        for (int i = 0; i < jsonArray.length(); i++) {
+            JSONObject recipeJson = jsonArray.getJSONObject(i);
+            Recipe recipe = new Recipe(recipeJson.getString("name"), recipeJson.getString("category"));
+            this.recipes.add(recipe);
+        }
+    }
+
     //MODIFIES: this
     //EFFECTS: Adds the recipe to the collection if it does not exists.
     public void addRecipe(Recipe recipe) {
