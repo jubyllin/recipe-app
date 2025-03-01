@@ -17,6 +17,7 @@ public class RecipeCollection implements Writable {
         this.recipes = new HashSet<>();
     }
 
+    
     //MODIFIES: this
     //EFFECTS: Adds the recipe to the collection if it does not exists.
     public void addRecipe(Recipe recipe) {
