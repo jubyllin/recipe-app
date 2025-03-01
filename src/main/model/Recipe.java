@@ -5,9 +5,13 @@ import java.util.List;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.json.JSONObject;
+
+import persistence.Writable;
+
 
 //Represents a recipe with name, category, ingredients needed,  preparation steps, and images.
-public class Recipe {
+public class Recipe implements Writable{
     private String name;                         //name of recipe
     private String category;                     //category(cuisine, meal type)
     private Set<String> ingredients;             //required ingredients
@@ -81,5 +85,16 @@ public class Recipe {
 
     public Set<String> getImages() {
         return new HashSet<>(images);
+    }
+
+    @Override
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("name", name);
+        json.put("category", category);
+        json.put("ingredients", ingredients);
+        json.put("steps", steps);
+        json.put("images", images);
+        return json;
     }
 }
