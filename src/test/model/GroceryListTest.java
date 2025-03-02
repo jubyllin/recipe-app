@@ -2,6 +2,9 @@ package model;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.*;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -98,5 +101,15 @@ public class GroceryListTest {
 
         assertEquals(0, testGroceryList.getGroceryItems().size());
         assertTrue(testGroceryList.getGroceryItems().isEmpty());
+    }
+
+    @Test
+    void testToJsonEmptyGroceryList() {
+        GroceryList groceryList = new GroceryList();  
+        JSONObject json = groceryList.toJson();
+
+        assertTrue(json.has("groceryItems"));  
+        JSONArray jsonArray = json.getJSONArray("groceryItems");
+        assertEquals(0, jsonArray.length());  
     }
 }
