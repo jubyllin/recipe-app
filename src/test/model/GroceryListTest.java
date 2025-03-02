@@ -112,4 +112,35 @@ public class GroceryListTest {
         JSONArray jsonArray = json.getJSONArray("groceryItems");
         assertEquals(0, jsonArray.length());  
     }
+
+    @Test
+    void testToJsonWithItems() {
+        GroceryList groceryList = new GroceryList();
+        groceryList.addItem("Milk");
+        groceryList.addItem("Eggs");
+        groceryList.addItem("Bread");
+
+        JSONObject json = groceryList.toJson();
+        
+        assertTrue(json.has("groceryItems")); 
+
+        JSONArray jsonArray = json.getJSONArray("groceryItems");
+        assertEquals(3, jsonArray.length());  
+    }
+
+    @Test
+    void testToJsonWithSpecialCharacters() {
+        GroceryList groceryList = new GroceryList();
+        groceryList.addItem("Fig");
+        groceryList.addItem("Orange Juice");
+
+        JSONObject json = groceryList.toJson();
+
+        JSONArray jsonArray = json.getJSONArray("groceryItems");
+        assertEquals(2, jsonArray.length());
+        
+        assertEquals("Fig", jsonArray.getString(0));
+        assertEquals("Orange Juice", jsonArray.getString(1));
+    }
+
 }
