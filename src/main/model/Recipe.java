@@ -11,7 +11,7 @@ import persistence.Writable;
 
 
 //Represents a recipe with name, category, ingredients needed,  preparation steps, and images.
-public class Recipe implements Writable{
+public class Recipe implements Writable {
     private String name;                         //name of recipe
     private String category;                     //category(cuisine, meal type)
     private Set<String> ingredients;             //required ingredients

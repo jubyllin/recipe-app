@@ -1,0 +1,12 @@
+{
+    "recipes": [
+      {
+        "name": "Canelé",
+        "category": "Dessert"
+      },
+      {
+        "name": "Fried rice",
+        "category": "Chinese"
+      }
+    ]
+  }

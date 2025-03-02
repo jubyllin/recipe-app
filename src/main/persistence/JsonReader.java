@@ -27,13 +27,13 @@ public class JsonReader {
     }
 
     private String readFile(String source) throws IOException {
-    StringBuilder contentBuilder = new StringBuilder();
-    BufferedReader reader = new BufferedReader(new FileReader(source));
-    String line;
-    while ((line = reader.readLine()) != null) {
-        contentBuilder.append(line);
-    }
-    reader.close();
-    return contentBuilder.toString();
+        StringBuilder contentBuilder = new StringBuilder();
+        BufferedReader reader = new BufferedReader(new FileReader(source));
+        String line;
+        while ((line = reader.readLine()) != null) {
+            contentBuilder.append(line);
+        }
+        reader.close();
+        return contentBuilder.toString();
     }
 }
