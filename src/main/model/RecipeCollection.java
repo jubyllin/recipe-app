@@ -45,9 +45,8 @@ public class RecipeCollection implements Writable {
         return new HashSet<>(recipes);
     }
     
-    @Override
     public JSONObject toJson() {
-        JSONObject json = new JSONObject();
+        JSONObject jsonObject = new JSONObject();
         JSONArray jsonArray = new JSONArray();
         for (Recipe recipe : recipes) {
             JSONObject recipeJson = new JSONObject();
@@ -55,7 +54,7 @@ public class RecipeCollection implements Writable {
             recipeJson.put("category", recipe.getCategory());
             jsonArray.put(recipeJson);
         }
-        json.put("recipes", jsonArray);
-        return json;
+        jsonObject.put("recipes", jsonArray);
+        return jsonObject;
     }
 }

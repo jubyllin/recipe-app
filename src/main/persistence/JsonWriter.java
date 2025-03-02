@@ -8,7 +8,6 @@ import java.io.PrintWriter;
 
 //Represents a writer that writes JSON representation of application data to a file.
 public class JsonWriter {
-    private static final int TAB = 4;
     private PrintWriter writer;
     private String destination;
 

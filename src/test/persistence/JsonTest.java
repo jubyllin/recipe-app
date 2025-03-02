@@ -3,7 +3,7 @@ package persistence;
 import model.Recipe;
 import model.RecipeCollection;
 import org.json.JSONArray;
-import org.json.JSONObject;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class JsonTest {
