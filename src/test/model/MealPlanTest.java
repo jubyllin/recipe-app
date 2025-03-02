@@ -103,8 +103,7 @@ public class MealPlanTest {
 
     @Test
     void testToJsonEmptyMealPlan() {
-        MealPlan mealPlan = new MealPlan();
-        JSONObject json = mealPlan.toJson();
+        JSONObject json = testMealPlan.toJson();
 
         assertTrue(json.has("mealSchedule"));  
         JSONObject schedule = json.getJSONObject("mealSchedule");

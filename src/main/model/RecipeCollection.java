@@ -1,6 +1,9 @@
 package model;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.json.JSONArray;
@@ -48,12 +51,17 @@ public class RecipeCollection implements Writable {
     public JSONObject toJson() {
         JSONObject jsonObject = new JSONObject();
         JSONArray jsonArray = new JSONArray();
+
+        List<Recipe> sortedRecipes = new ArrayList<>(recipes);
+        sortedRecipes.sort(Comparator.comparing(Recipe::getName));
+
         for (Recipe recipe : recipes) {
             JSONObject recipeJson = new JSONObject();
             recipeJson.put("name", recipe.getName());
             recipeJson.put("category", recipe.getCategory());
             jsonArray.put(recipeJson);
         }
+        
         jsonObject.put("recipes", jsonArray);
         return jsonObject;
     }
