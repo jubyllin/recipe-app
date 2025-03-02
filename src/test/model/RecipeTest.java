@@ -27,6 +27,7 @@ public class RecipeTest {
         assertTrue(ingredients.contains("Milk"));
 
         assertEquals("Breakfast", testRecipe.getCategory());
+        assertEquals("French Toast", testRecipe.getName());;
     }
 
     @Test
