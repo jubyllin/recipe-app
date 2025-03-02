@@ -3,6 +3,8 @@ package model;
 import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.*;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -18,6 +20,7 @@ public class MealPlanTest {
     @BeforeEach
     void runBefore() {
         testMealPlan = new MealPlan();
+
         recipe1 = new Recipe("Basque cheesecake", "Snack");
         recipe2 = new Recipe("Curry", "Japanese");
         recipe3 = new Recipe("Acai bowl", "Snack");
@@ -98,5 +101,54 @@ public class MealPlanTest {
         assertTrue(testMealPlan.getMealPlan().isEmpty());
     }
 
+    @Test
+    void testToJsonEmptyMealPlan() {
+        MealPlan mealPlan = new MealPlan();
+        JSONObject json = mealPlan.toJson();
+
+        assertTrue(json.has("mealSchedule"));  
+        JSONObject schedule = json.getJSONObject("mealSchedule");
+        assertEquals(0, schedule.length()); 
+    }
+
+    @Test
+    void testToJsonSingleDaySingleRecipe() {
+        testMealPlan.addMeal("Monday", new Recipe("Hamburger", "American")); 
     
+        JSONObject json = testMealPlan.toJson();
+        assertTrue(json.has("mealSchedule"));
+    
+        JSONObject schedule = json.getJSONObject("mealSchedule");
+        assertTrue(schedule.has("Monday"));
+    
+        JSONArray mondayRecipes = schedule.getJSONArray("Monday");
+        assertEquals(1, mondayRecipes.length());
+    
+        JSONObject recipeJson = mondayRecipes.getJSONObject(0);
+        assertEquals("Hamburger", recipeJson.getString("name"));
+        assertEquals("American", recipeJson.getString("category"));
+    }
+    
+    @Test
+    void testToJsonMultipleDaysMultipleRecipes() {
+        testMealPlan.addMeal("Monday", new Recipe("Sandwich", "Breakfast"));
+        testMealPlan.addMeal("Monday", new Recipe("Dumplings", "Chinese"));
+        testMealPlan.addMeal("Tuesday", new Recipe("Green curry", "Thai"));
+    
+        JSONObject json = testMealPlan.toJson();
+        assertTrue(json.has("mealSchedule"));
+    
+        JSONObject schedule = json.getJSONObject("mealSchedule");
+    
+        assertTrue(schedule.has("Monday"));
+        JSONArray mondayRecipes = schedule.getJSONArray("Monday");
+        assertEquals(2, mondayRecipes.length());
+        assertEquals("Sandwich", mondayRecipes.getJSONObject(0).getString("name"));
+        assertEquals("Dumplings", mondayRecipes.getJSONObject(1).getString("name"));
+    
+        assertTrue(schedule.has("Tuesday"));
+        JSONArray tuesdayRecipes = schedule.getJSONArray("Tuesday");
+        assertEquals(1, tuesdayRecipes.length());
+        assertEquals("Green curry", tuesdayRecipes.getJSONObject(0).getString("name"));
+    }
 }

@@ -66,6 +66,7 @@ public class MealPlan implements Writable {
     public JSONObject toJson() {
         JSONObject json = new JSONObject();
         JSONObject schedule = new JSONObject();
+        
         for (String day : mealSchedule.keySet()) {
             JSONArray recipesArray = new JSONArray();
             for (Recipe recipe : mealSchedule.get(day)) {
@@ -73,7 +74,10 @@ public class MealPlan implements Writable {
             }
             schedule.put(day, recipesArray);
         }
+    
         json.put("mealSchedule", schedule);
+        System.out.println("Generated JSON: " + json.toString(4)); 
+    
         return json;
     }
 }
