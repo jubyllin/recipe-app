@@ -380,7 +380,7 @@ public class MyRecipeApp {
             if (jsonObject.has("mealPlan") && !jsonObject.isNull("mealPlan")) {
                 mealPlan = new MealPlan(jsonObject.getJSONObject("mealPlan"));
             } else {
-                mealPlan = new MealPlan(); // Create a new empty MealPlan if missing
+                mealPlan = new MealPlan(); 
             }
 
             System.out.println("Data loaded successfully!");

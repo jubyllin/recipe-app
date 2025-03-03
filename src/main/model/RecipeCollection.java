@@ -15,28 +15,28 @@ import persistence.Writable;
 public class RecipeCollection implements Writable {
     private Set<Recipe> recipes;
 
-    //Creates an empty RecipeCollection.
+    // Creates an empty RecipeCollection.
     public RecipeCollection() {
         this.recipes = new HashSet<>();
     }
 
-    //Constructs a RecipeCollection from a given JSON object.
+    // Constructs a RecipeCollection from a given JSON object.
     public RecipeCollection(JSONObject jsonObject) {
         this();
         JSONArray jsonArray = jsonObject.getJSONArray("recipes");
         for (int i = 0; i < jsonArray.length(); i++) {
-            recipes.add(new Recipe(jsonArray.getJSONObject(i))); // Convert each JSONObject into a Recipe
+            recipes.add(new Recipe(jsonArray.getJSONObject(i)));
         }
     }
 
-    //MODIFIES: this
-    //EFFECTS: Adds the recipe to the collection if it does not exists.
+    // MODIFIES: this
+    // EFFECTS: Adds the recipe to the collection if it does not exists.
     public void addRecipe(Recipe recipe) {
         recipes.add(recipe);
     }
 
-    //MODIFIES: this
-    //EFFECTS: Removes the recipe from the collection if it exists.
+    // MODIFIES: this
+    // EFFECTS: Removes the recipe from the collection if it exists.
     public void removeRecipe(Recipe recipe) {
         recipes.remove(recipe);
 
@@ -45,7 +45,7 @@ public class RecipeCollection implements Writable {
     public Set<Recipe> getRecipes() {
         return new HashSet<>(recipes);
     }
-    
+
     public JSONObject toJson() {
         JSONObject jsonObject = new JSONObject();
         JSONArray jsonArray = new JSONArray();
@@ -59,7 +59,7 @@ public class RecipeCollection implements Writable {
             recipeJson.put("category", recipe.getCategory());
             jsonArray.put(recipe.toJson());
         }
-        
+
         jsonObject.put("recipes", jsonArray);
         return jsonObject;
     }

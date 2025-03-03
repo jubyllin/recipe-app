@@ -25,7 +25,7 @@ public class JsonWriterTest {
         try {
             Files.deleteIfExists(Paths.get(TEST_FILE));
         } catch (IOException e) {
-            //pass
+            // pass
         }
     }
 
@@ -41,10 +41,10 @@ public class JsonWriterTest {
             JSONObject json = new JSONObject(content);
 
             assertTrue(json.has("recipes"));
-            assertEquals(0, json.getJSONArray("recipes").length()); 
+            assertEquals(0, json.getJSONArray("recipes").length());
 
         } catch (IOException e) {
-            //pass
+            // pass
         }
     }
 
@@ -66,11 +66,9 @@ public class JsonWriterTest {
             assertEquals(2, json.getJSONArray("recipes").length());
 
         } catch (IOException e) {
-            //pass
+            // pass
         }
     }
-
-
 
     @Test
     void testWriteToInvalidFile() {
@@ -81,5 +79,5 @@ public class JsonWriterTest {
 
         assertThrows(FileNotFoundException.class, () -> writer.write(jsonObject));
     }
-    
+
 }
