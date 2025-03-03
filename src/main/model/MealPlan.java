@@ -12,11 +12,11 @@ import persistence.Writable;
 
 //Represents a weekly meal plan.
 public class MealPlan implements Writable {
-    private Map<String, List<Recipe>> mealSchedule;
+    private Map<String, List<Recipe>> mealPlan;
 
     //Creates an empty meal plan.
     public MealPlan() {
-        this.mealSchedule = new HashMap<>();
+        this.mealPlan = new HashMap<>();
     }
 
     //Create a meal plan that accepts a JSONObject.
@@ -29,7 +29,7 @@ public class MealPlan implements Writable {
             for (int i = 0; i < recipesArray.length(); i++) {
                 recipes.add(new Recipe(recipesArray.getJSONObject(i)));
             }
-            mealSchedule.put(day, recipes);
+            mealPlan.put(day, recipes);
         }
     }
     
@@ -37,24 +37,24 @@ public class MealPlan implements Writable {
     //MODIFIES: this
     //EFFECTS: Adds a recipe to a specific day in the meal plan.
     public void addMeal(String day, Recipe recipe) {
-        if (!mealSchedule.containsKey(day)) {
-            mealSchedule.put(day, new ArrayList<>());
+        if (!mealPlan.containsKey(day)) {
+            mealPlan.put(day, new ArrayList<>());
         }
-        mealSchedule.get(day).add(recipe);
+        mealPlan.get(day).add(recipe);
     }
 
     //MODIFIES: this
     //EFFECTS: Removes a specified meal from the day in the meal plan.
     public void removeSpecificMeal(String day, Recipe recipe) {
-        if (mealSchedule.containsKey(day)) {
-            mealSchedule.get(day).remove(recipe);
+        if (mealPlan.containsKey(day)) {
+            mealPlan.get(day).remove(recipe);
         }
     }
         
     //MODIFIES: this
     //EFFECTS: Removes all meals assigned to the specified day.
     public void removeMeal(String day) {
-        mealSchedule.remove(day);
+        mealPlan.remove(day);
     }
 
 
@@ -62,35 +62,35 @@ public class MealPlan implements Writable {
     //MODIFIES: this
     //EFFECTS: Reset the weekly meal plan to empty.
     public void clearMealPlan() {
-        mealSchedule.clear();
+        mealPlan.clear();
     }
 
     public List<Recipe> getMeals(String day) {
-        if (mealSchedule.containsKey(day)) {
-            return mealSchedule.get(day);
+        if (mealPlan.containsKey(day)) {
+            return mealPlan.get(day);
         } else {
             return new ArrayList<>();
         }
     }
     
     public Map<String, List<Recipe>> getMealPlan() {
-        return new HashMap<>(mealSchedule);
+        return new HashMap<>(mealPlan);
     }
 
     @Override
     public JSONObject toJson() {
         JSONObject jsonObject = new JSONObject();
-        JSONObject jsonMealSchedule = new JSONObject();
+        JSONObject jsonMealPlan = new JSONObject();
         
-        for (String day : mealSchedule.keySet()) {
+        for (String day : mealPlan.keySet()) {
             JSONArray recipesArray = new JSONArray();
-            for (Recipe recipe : mealSchedule.get(day)) {
+            for (Recipe recipe : mealPlan.get(day)) {
                 recipesArray.put(recipe.toJson());
             }
-            jsonMealSchedule.put(day, recipesArray);
+            jsonMealPlan.put(day, recipesArray);
         }
     
-        jsonObject.put("mealSchedule", jsonMealSchedule);    
+        jsonObject.put("mealPlan", jsonMealPlan);    
         return jsonObject;
     }
 }

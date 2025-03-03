@@ -105,8 +105,8 @@ public class GroceryListTest {
 
     @Test
     void testToJsonEmptyGroceryList() {
-        GroceryList groceryList = new GroceryList();  
-        JSONObject json = groceryList.toJson();
+        
+        JSONObject json = testGroceryList.toJson();
 
         assertTrue(json.has("groceryItems"));  
         JSONArray jsonArray = json.getJSONArray("groceryItems");
@@ -115,23 +115,25 @@ public class GroceryListTest {
 
     @Test
     void testToJsonWithItems() {
-        GroceryList groceryList = new GroceryList();
-        groceryList.addItem("Milk");
-        groceryList.addItem("Eggs");
-        groceryList.addItem("Bread");
+        testGroceryList.addItem("Milk");
+        testGroceryList.addItem("Eggs");
+        testGroceryList.addItem("Bread");
 
-        JSONObject json = groceryList.toJson();
+        JSONObject json = testGroceryList.toJson();
         
         assertTrue(json.has("groceryItems")); 
-
         JSONArray jsonArray = json.getJSONArray("groceryItems");
+
         assertEquals(3, jsonArray.length());  
+        assertTrue(jsonArray.toList().contains("Milk"));
+        assertTrue(jsonArray.toList().contains("Eggs"));
+        assertTrue(jsonArray.toList().contains("Bread"));
     }
 
     @Test
     void testToJsonWithSpecialCharacters() {
         GroceryList groceryList = new GroceryList();
-        groceryList.addItem("Fig");
+        groceryList.addItem("Apple🍎");
         groceryList.addItem("Orange Juice");
 
         JSONObject json = groceryList.toJson();
@@ -139,8 +141,24 @@ public class GroceryListTest {
         JSONArray jsonArray = json.getJSONArray("groceryItems");
         assertEquals(2, jsonArray.length());
         
-        assertEquals("Fig", jsonArray.getString(0));
-        assertEquals("Orange Juice", jsonArray.getString(1));
+        assertTrue(jsonArray.toList().contains("Apple🍎"));
+        assertTrue(jsonArray.toList().contains("Orange Juice"));
+    }
+
+    @Test
+    void testFromJson() {
+        JSONObject json = new JSONObject();
+        JSONArray jsonArray = new JSONArray();
+        jsonArray.put("Rice");
+        jsonArray.put("Chicken");
+        json.put("groceryItems", jsonArray);
+
+        GroceryList loadedList = new GroceryList(json);
+        Set<String> items = loadedList.getGroceryItems();
+
+        assertEquals(2, items.size());
+        assertTrue(items.contains("Rice"));
+        assertTrue(items.contains("Chicken"));
     }
 
 }

@@ -4,10 +4,10 @@ import model.*;
 import persistence.JsonReader;
 import persistence.JsonWriter;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.*;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 //Recipe manager application.
@@ -17,7 +17,6 @@ public class MyRecipeApp {
     private MealPlan mealPlan;
     private Scanner input;
     private static final String SAVE_FILE = "./data/recipeData.json";
-
 
     // Initializes the appplication.
     public MyRecipeApp() {
@@ -32,23 +31,23 @@ public class MyRecipeApp {
     // EFFECTS: Runs the main application.
     private void runMyRecipe() {
         System.out.println("Welcome to My Recipe App!");
-        System.out.print("Do you want to load saved data? (yes/no): ");
+        System.out.print("Do you want to load saved data? (yes/no) ");
         String response = input.nextLine().trim().toLowerCase();
-        
+
         if (response.equals("yes")) {
             loadData();
         }
-        boolean keepGoing = true;
 
+        boolean keepGoing = true;
         while (keepGoing) {
             displayMenu();
             String command = input.nextLine().trim();
             keepGoing = processCommand(command);
         }
 
-        System.out.print("Do you want to save your data before exiting? (yes/no): ");
+        System.out.print("Do you want to save your data before exiting? (yes/no) ");
         response = input.nextLine().trim().toLowerCase();
-        
+
         if (response.equals("yes")) {
             saveData();
         }
@@ -60,6 +59,9 @@ public class MyRecipeApp {
     // EFFECTS: Processess user commands from the menu. Returns true to continue
     // running, otherwise, false to exit the application.
     private boolean processCommand(String command) {
+        if (command.equals("11")) {
+            return false;
+        }
         executeCommand(command);
         return true;
     }
@@ -92,10 +94,9 @@ public class MyRecipeApp {
         }
     }
 
-   // EFFECTS: Prints a goodbye message and exits the application.
+    // EFFECTS: Prints a goodbye message and exits the application.
     private void exitApp() {
-        System.out.println("Goodbye;)"); 
-        System.exit(0); 
+        System.out.println("Goodbye;)");
     }
 
     // EFFECTS: Displays the main menu options to the user.
@@ -119,24 +120,24 @@ public class MyRecipeApp {
     // EFFECTS: Conducts adding a new recipe.
     private void addRecipe() {
         Recipe recipe = createRecipe();
-        addIngredients(recipe); 
-        addSteps(recipe); 
-    
+        addIngredients(recipe);
+        addSteps(recipe);
+
         recipeCollection.addRecipe(recipe);
         System.out.println("Recipe added successfully!");
     }
-    
+
     // EFFECTS: Creates and returns a new Recipe from the user input.
     private Recipe createRecipe() {
         System.out.print("Enter recipe name: ");
         String name = input.nextLine().trim();
-    
+
         System.out.print("Enter category (cuisine, meal type): ");
         String category = input.nextLine().trim();
-    
+
         return new Recipe(name, category);
     }
-    
+
     // MODIFIES: this
     // EFFECTS: Enables user to input ingredients for a recipe.
     private void addIngredients(Recipe recipe) {
@@ -154,7 +155,7 @@ public class MyRecipeApp {
             }
         } while (!ingredient.isEmpty());
     }
-    
+
     // MODIFIES: this
     // EFFECTS: Enables user to input steps for a recipe.
     private void addSteps(Recipe recipe) {
@@ -172,7 +173,6 @@ public class MyRecipeApp {
             }
         } while (!step.isEmpty());
     }
-    
 
     // MODIFIES: this
     // EFFECTS: Conducts deleting an existing recipe.
@@ -201,9 +201,9 @@ public class MyRecipeApp {
         String itemsInput = input.nextLine().trim();
 
         if (!itemsInput.isEmpty()) {
-            String[] items = itemsInput.split(","); 
+            String[] items = itemsInput.split(",");
             for (String item : items) {
-                groceryList.addItem(item.trim()); 
+                groceryList.addItem(item.trim());
             }
             System.out.println("Items added successfully!");
         }
@@ -271,7 +271,7 @@ public class MyRecipeApp {
             if (choice >= 1 && choice <= recipes.size()) {
                 Recipe selectedRecipe = recipes.get(choice - 1);
                 System.out.println();
-                displayRecipeDetails(selectedRecipe); 
+                displayRecipeDetails(selectedRecipe);
             } else {
                 System.out.println("Invalid selection.");
             }
@@ -281,7 +281,7 @@ public class MyRecipeApp {
     }
 
     // EFFECTS: Displays the selected recipe with its details, including,
-    //              name, category, ingredients, and steps.
+    // name, category, ingredients, and steps.
     private void displayRecipeDetails(Recipe recipe) {
         System.out.println("🥘 Recipe Details 🥘");
         System.out.println("Name: " + recipe.getName());
@@ -353,26 +353,40 @@ public class MyRecipeApp {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("recipeCollection", recipeCollection.toJson());
         jsonObject.put("groceryList", groceryList.toJson());
-        jsonObject.put("mealPlan", mealPlan.toJson());
+
+        if (mealPlan != null) {
+            jsonObject.put("mealPlan", mealPlan.toJson());
+        } else {
+            jsonObject.put("mealPlan", new JSONObject());
+        }
 
         JsonWriter writer = new JsonWriter(SAVE_FILE);
-        writer.write(jsonObject);
-        System.out.println("Data saved successfully!");
+        try {
+            writer.write(jsonObject);
+            System.out.println("Data saved successfully!");
+        } catch (FileNotFoundException e) {
+            System.out.println("Error: Unable to save data. File not found.");
+        }
     }
 
     private void loadData() {
         JsonReader reader = new JsonReader(SAVE_FILE);
         try {
-        JSONObject jsonObject = reader.read(); 
+            JSONObject jsonObject = reader.read();
 
-        recipeCollection = new RecipeCollection(jsonObject.getJSONObject("recipeCollection"));
-        groceryList = new GroceryList(jsonObject.getJSONObject("groceryList"));
-        mealPlan = new MealPlan(jsonObject.getJSONObject("mealPlan"));
-        System.out.println("Data loaded successfully!");
-    } catch (IOException e) {
-        System.out.println("Error reading saved data: " + e.getMessage());
-    }
-    }
+            recipeCollection = new RecipeCollection(jsonObject.getJSONObject("recipeCollection"));
+            groceryList = new GroceryList(jsonObject.getJSONObject("groceryList"));
 
+            if (jsonObject.has("mealPlan") && !jsonObject.isNull("mealPlan")) {
+                mealPlan = new MealPlan(jsonObject.getJSONObject("mealPlan"));
+            } else {
+                mealPlan = new MealPlan(); // Create a new empty MealPlan if missing
+            }
+
+            System.out.println("Data loaded successfully!");
+        } catch (IOException e) {
+            System.out.println("Error reading saved data: " + e.getMessage());
+        }
+    }
 
 }

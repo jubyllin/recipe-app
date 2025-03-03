@@ -2,9 +2,9 @@ package persistence;
 
 import org.json.JSONObject;
 
-import model.RecipeCollection;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 
@@ -21,8 +21,12 @@ public class JsonReader {
     //MODIFIES: this
     //EFFECTS: Reads JSON data from the file and return in the form of JSON object.
     public JSONObject read() throws IOException {
+        File file = new File(source);
+        if (!file.exists()) {
+            throw new IOException("File not found: " + source);
+        }
+
         String jsonData = readFile(source);
-        JSONObject jsonObject = new JSONObject(jsonData);
         return new JSONObject(jsonData);
     }
 

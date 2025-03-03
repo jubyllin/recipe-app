@@ -8,6 +8,7 @@ import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -105,8 +106,8 @@ public class MealPlanTest {
     void testToJsonEmptyMealPlan() {
         JSONObject json = testMealPlan.toJson();
 
-        assertTrue(json.has("mealSchedule"));  
-        JSONObject schedule = json.getJSONObject("mealSchedule");
+        assertTrue(json.has("mealPlan"));  
+        JSONObject schedule = json.getJSONObject("mealPlan");
         assertEquals(0, schedule.length()); 
     }
 
@@ -115,9 +116,9 @@ public class MealPlanTest {
         testMealPlan.addMeal("Monday", new Recipe("Hamburger", "American")); 
     
         JSONObject json = testMealPlan.toJson();
-        assertTrue(json.has("mealSchedule"));
+        assertTrue(json.has("mealPlan"));
     
-        JSONObject schedule = json.getJSONObject("mealSchedule");
+        JSONObject schedule = json.getJSONObject("mealPlan");
         assertTrue(schedule.has("Monday"));
     
         JSONArray mondayRecipes = schedule.getJSONArray("Monday");
@@ -135,9 +136,9 @@ public class MealPlanTest {
         testMealPlan.addMeal("Tuesday", new Recipe("Green curry", "Thai"));
     
         JSONObject json = testMealPlan.toJson();
-        assertTrue(json.has("mealSchedule"));
+        assertTrue(json.has("mealPlan"));
     
-        JSONObject schedule = json.getJSONObject("mealSchedule");
+        JSONObject schedule = json.getJSONObject("mealPlan");
     
         assertTrue(schedule.has("Monday"));
         JSONArray mondayRecipes = schedule.getJSONArray("Monday");
@@ -150,4 +151,58 @@ public class MealPlanTest {
         assertEquals(1, tuesdayRecipes.length());
         assertEquals("Green curry", tuesdayRecipes.getJSONObject(0).getString("name"));
     }
+
+    @Test
+    void testLoadMealPlanFromJson() {
+        JSONObject recipeJson1 = new JSONObject();
+        recipeJson1.put("name", "Pasta");
+        recipeJson1.put("category", "Dinner");
+        recipeJson1.put("ingredients", new JSONArray(Arrays.asList("Pasta", "Tomato Sauce", "Cheese")));
+        recipeJson1.put("steps", new JSONArray(Arrays.asList("Boil pasta", "Add sauce", "Sprinkle cheese")));
+
+        JSONObject recipeJson2 = new JSONObject();
+        recipeJson2.put("name", "Salad");
+        recipeJson2.put("category", "Lunch");
+        recipeJson2.put("ingredients", new JSONArray(Arrays.asList("Lettuce", "Tomato", "Dressing")));
+        recipeJson2.put("steps", new JSONArray(Arrays.asList("Chop lettuce", "Add tomato", "Mix with dressing")));
+
+        JSONObject jsonMealPlan = new JSONObject();
+        jsonMealPlan.put("Monday", new JSONArray(Arrays.asList(recipeJson1)));
+        jsonMealPlan.put("Tuesday", new JSONArray(Arrays.asList(recipeJson2)));
+
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("mealPlan", jsonMealPlan);
+
+        MealPlan loadedMealPlan = new MealPlan(jsonObject);
+
+        assertTrue(loadedMealPlan.getMealPlan().containsKey("Monday"));
+        assertTrue(loadedMealPlan.getMealPlan().containsKey("Tuesday"));
+        assertEquals(1, loadedMealPlan.getMealPlan().get("Monday").size());
+        assertEquals(1, loadedMealPlan.getMealPlan().get("Tuesday").size());
+
+        Recipe loadedRecipe1 = loadedMealPlan.getMealPlan().get("Monday").get(0);
+        assertEquals("Pasta", loadedRecipe1.getName());
+        assertEquals("Dinner", loadedRecipe1.getCategory());
+        assertTrue(loadedRecipe1.getIngredients().contains("Pasta"));
+        assertTrue(loadedRecipe1.getIngredients().contains("Tomato Sauce"));
+        assertTrue(loadedRecipe1.getSteps().contains("Boil pasta"));
+
+        Recipe loadedRecipe2 = loadedMealPlan.getMealPlan().get("Tuesday").get(0);
+        assertEquals("Salad", loadedRecipe2.getName());
+        assertEquals("Lunch", loadedRecipe2.getCategory());
+        assertTrue(loadedRecipe2.getIngredients().contains("Lettuce"));
+        assertTrue(loadedRecipe2.getIngredients().contains("Tomato"));
+        assertTrue(loadedRecipe2.getSteps().contains("Chop lettuce"));
+    }
+
+    @Test
+    void testLoadEmptyMealPlanFromJson() {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("mealPlan", new JSONObject()); 
+
+        MealPlan loadedMealPlan = new MealPlan(jsonObject);
+
+        assertTrue(loadedMealPlan.getMealPlan().isEmpty());
+    }
+
 }

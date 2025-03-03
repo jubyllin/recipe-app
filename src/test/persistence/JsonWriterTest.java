@@ -1,19 +1,20 @@
 package persistence;
 
 import model.*;
+
 import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
 public class JsonWriterTest {
     private static final String TEST_FILE = "./data/testRecipeData.json";
-    private static final String INVALID_FILE = "/invalid_path/invalid_file.json";
     private RecipeCollection recipes;
     GroceryList groceryList = new GroceryList();
     MealPlan mealPlan = new MealPlan();
@@ -21,6 +22,11 @@ public class JsonWriterTest {
     @BeforeEach
     void runBefore() {
         recipes = new RecipeCollection();
+        try {
+            Files.deleteIfExists(Paths.get(TEST_FILE));
+        } catch (IOException e) {
+            //pass
+        }
     }
 
     @Test
@@ -65,11 +71,15 @@ public class JsonWriterTest {
     }
 
 
+
     @Test
-    void testWriterInvalidFile() {
-        assertThrows(IOException.class, () -> {
-            JsonWriter writer = new JsonWriter(INVALID_FILE);
-            writer.open(); 
-        });
-    }   
+    void testWriteToInvalidFile() {
+        String invalidFile = "/invalid_path/test.json";
+        JsonWriter writer = new JsonWriter(invalidFile);
+
+        JSONObject jsonObject = new JSONObject();
+
+        assertThrows(FileNotFoundException.class, () -> writer.write(jsonObject));
+    }
+    
 }
