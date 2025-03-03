@@ -242,7 +242,7 @@ public class MyRecipeApp {
         }
     }
 
-    // MODIFIES: this
+    // MODIFIES: this 
     // EFFECTS: Conducts deleting a specified meal in the meal plan.
     private void deleteMeal() {
         System.out.print("Enter the day to delete a meal from: ");
@@ -349,6 +349,8 @@ public class MyRecipeApp {
         }
     }
 
+    //MODIFES: this
+    //EFFECTS: Save all entered datas.
     private void saveData() {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("recipeCollection", recipeCollection.toJson());
@@ -369,6 +371,8 @@ public class MyRecipeApp {
         }
     }
 
+    //MODIFIES: this
+    //EFFECTS: Load data from saved data files.
     private void loadData() {
         JsonReader reader = new JsonReader(SAVE_FILE);
         try {
