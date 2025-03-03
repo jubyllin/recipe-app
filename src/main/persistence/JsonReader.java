@@ -20,10 +20,10 @@ public class JsonReader {
 
     //MODIFIES: this
     //EFFECTS: Reads JSON data from the file and return in the form of JSON object.
-    public RecipeCollection read() throws IOException {
+    public JSONObject read() throws IOException {
         String jsonData = readFile(source);
         JSONObject jsonObject = new JSONObject(jsonData);
-        return new RecipeCollection(jsonObject);
+        return new JSONObject(jsonData);
     }
 
     private String readFile(String source) throws IOException {

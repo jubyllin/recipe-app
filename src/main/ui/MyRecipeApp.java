@@ -1,7 +1,14 @@
 package ui;
 
 import model.*;
+import persistence.JsonReader;
+import persistence.JsonWriter;
+
+import java.io.IOException;
 import java.util.*;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 //Recipe manager application.
 public class MyRecipeApp {
@@ -9,6 +16,8 @@ public class MyRecipeApp {
     private GroceryList groceryList;
     private MealPlan mealPlan;
     private Scanner input;
+    private static final String SAVE_FILE = "./data/recipeData.json";
+
 
     // Initializes the appplication.
     public MyRecipeApp() {
@@ -22,6 +31,13 @@ public class MyRecipeApp {
     // MODIFIES: this
     // EFFECTS: Runs the main application.
     private void runMyRecipe() {
+        System.out.println("Welcome to My Recipe App!");
+        System.out.print("Do you want to load saved data? (yes/no): ");
+        String response = input.nextLine().trim().toLowerCase();
+        
+        if (response.equals("yes")) {
+            loadData();
+        }
         boolean keepGoing = true;
 
         while (keepGoing) {
@@ -29,6 +45,14 @@ public class MyRecipeApp {
             String command = input.nextLine().trim();
             keepGoing = processCommand(command);
         }
+
+        System.out.print("Do you want to save your data before exiting? (yes/no): ");
+        response = input.nextLine().trim().toLowerCase();
+        
+        if (response.equals("yes")) {
+            saveData();
+        }
+
         System.out.println("Goodbye!");
     }
 
@@ -324,5 +348,31 @@ public class MyRecipeApp {
             }
         }
     }
+
+    private void saveData() {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("recipeCollection", recipeCollection.toJson());
+        jsonObject.put("groceryList", groceryList.toJson());
+        jsonObject.put("mealPlan", mealPlan.toJson());
+
+        JsonWriter writer = new JsonWriter(SAVE_FILE);
+        writer.write(jsonObject);
+        System.out.println("Data saved successfully!");
+    }
+
+    private void loadData() {
+        JsonReader reader = new JsonReader(SAVE_FILE);
+        try {
+        JSONObject jsonObject = reader.read(); 
+
+        recipeCollection = new RecipeCollection(jsonObject.getJSONObject("recipeCollection"));
+        groceryList = new GroceryList(jsonObject.getJSONObject("groceryList"));
+        mealPlan = new MealPlan(jsonObject.getJSONObject("mealPlan"));
+        System.out.println("Data loaded successfully!");
+    } catch (IOException e) {
+        System.out.println("Error reading saved data: " + e.getMessage());
+    }
+    }
+
 
 }

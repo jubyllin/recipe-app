@@ -2,6 +2,7 @@ package persistence;
 
 import model.RecipeCollection;
 
+import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -15,10 +16,11 @@ public class JsonReaderTest {
     void testReadRecipeCollection() {
         JsonReader reader = new JsonReader(TEST_FILE);
         try {
-            RecipeCollection collection = reader.read();
-            assertNotNull(collection);
+            JSONObject jsonObject = reader.read();
 
-            RecipeCollection loadedRecipes = collection;
+            RecipeCollection loadedRecipes = new RecipeCollection(jsonObject.getJSONObject("recipeCollection"));
+            assertNotNull(loadedRecipes);
+
             assertEquals(2, loadedRecipes.getRecipes().size());
         } catch (IOException e) {
             //pass

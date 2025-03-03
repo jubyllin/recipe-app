@@ -1,10 +1,16 @@
 {"recipes": [
     {
+        "images": [],
         "name": "Spaghetti",
-        "category": "Italian"
+        "ingredients": [],
+        "category": "Italian",
+        "steps": []
     },
     {
+        "images": [],
         "name": "Sushi",
-        "category": "Japanese"
+        "ingredients": [],
+        "category": "Japanese",
+        "steps": []
     }
 ]}

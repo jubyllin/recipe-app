@@ -22,12 +22,10 @@ public class RecipeCollection implements Writable {
 
     //Constructs a RecipeCollection from a given JSON object.
     public RecipeCollection(JSONObject jsonObject) {
-        this.recipes = new HashSet<>();
+        this();
         JSONArray jsonArray = jsonObject.getJSONArray("recipes");
         for (int i = 0; i < jsonArray.length(); i++) {
-            JSONObject recipeJson = jsonArray.getJSONObject(i);
-            Recipe recipe = new Recipe(recipeJson.getString("name"), recipeJson.getString("category"));
-            this.recipes.add(recipe);
+            recipes.add(new Recipe(jsonArray.getJSONObject(i))); // Convert each JSONObject into a Recipe
         }
     }
 
@@ -59,10 +57,11 @@ public class RecipeCollection implements Writable {
             JSONObject recipeJson = new JSONObject();
             recipeJson.put("name", recipe.getName());
             recipeJson.put("category", recipe.getCategory());
-            jsonArray.put(recipeJson);
+            jsonArray.put(recipe.toJson());
         }
         
         jsonObject.put("recipes", jsonArray);
         return jsonObject;
     }
+
 }

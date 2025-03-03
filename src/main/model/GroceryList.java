@@ -16,6 +16,16 @@ public class GroceryList implements Writable {
     public GroceryList() {
         this.groceryItems = new HashSet<>();
     }
+
+    //Constructs a GroceryList that accepts a JSONObject.
+    public GroceryList(JSONObject jsonObject) {
+        this();
+        JSONArray jsonArray = jsonObject.getJSONArray("groceryItems"); 
+        for (int i = 0; i < jsonArray.length(); i++) {
+            groceryItems.add(jsonArray.getString(i));
+        }
+    }
+    
     
     //MODIFIES: this
     //EFFECTS: Adds the item to the list if it does not exist.
@@ -54,12 +64,8 @@ public class GroceryList implements Writable {
 
     @Override
     public JSONObject toJson() {
-        JSONObject json = new JSONObject();
-        JSONArray jsonArray = new JSONArray();
-        for (String item : groceryItems) {
-            jsonArray.put(item);
-        }
-        json.put("groceryItems", jsonArray);
-        return json;
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("groceryItems",  new JSONArray(groceryItems));
+        return jsonObject;
     }
 }

@@ -19,6 +19,21 @@ public class MealPlan implements Writable {
         this.mealSchedule = new HashMap<>();
     }
 
+    //Create a meal plan that accepts a JSONObject.
+    public MealPlan(JSONObject jsonObject) {
+        this();
+        JSONObject jsonMealPlan = jsonObject.getJSONObject("mealPlan"); 
+        for (String day : jsonMealPlan.keySet()) {
+            JSONArray recipesArray = jsonMealPlan.getJSONArray(day);
+            List<Recipe> recipes = new ArrayList<>();
+            for (int i = 0; i < recipesArray.length(); i++) {
+                recipes.add(new Recipe(recipesArray.getJSONObject(i)));
+            }
+            mealSchedule.put(day, recipes);
+        }
+    }
+    
+
     //MODIFIES: this
     //EFFECTS: Adds a recipe to a specific day in the meal plan.
     public void addMeal(String day, Recipe recipe) {
@@ -64,20 +79,18 @@ public class MealPlan implements Writable {
 
     @Override
     public JSONObject toJson() {
-        JSONObject json = new JSONObject();
-        JSONObject schedule = new JSONObject();
+        JSONObject jsonObject = new JSONObject();
+        JSONObject jsonMealSchedule = new JSONObject();
         
         for (String day : mealSchedule.keySet()) {
             JSONArray recipesArray = new JSONArray();
             for (Recipe recipe : mealSchedule.get(day)) {
                 recipesArray.put(recipe.toJson());
             }
-            schedule.put(day, recipesArray);
+            jsonMealSchedule.put(day, recipesArray);
         }
     
-        json.put("mealSchedule", schedule);
-        System.out.println("Generated JSON: " + json.toString(4)); 
-    
-        return json;
+        jsonObject.put("mealSchedule", jsonMealSchedule);    
+        return jsonObject;
     }
 }

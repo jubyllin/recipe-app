@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.json.JSONObject;
+import org.json.JSONArray;
 
 import persistence.Writable;
 
@@ -26,6 +27,14 @@ public class Recipe implements Writable {
         this.steps = new ArrayList<>();
         this.images = new HashSet<>();
     } 
+
+    //Create a constructor that initializes recipe from a JSONObject.
+    public Recipe(JSONObject jsonObject) {
+        this.name = jsonObject.getString("name");
+        this.category = jsonObject.getString("category");
+        this.ingredients = new HashSet<>(jsonArrayToList(jsonObject.getJSONArray("ingredients")));
+        this.steps = jsonArrayToList(jsonObject.getJSONArray("steps"));
+    }
 
     //REQUIRES: amount > 0
     //MODIFIES: this
@@ -96,5 +105,13 @@ public class Recipe implements Writable {
         json.put("steps", steps);
         json.put("images", images);
         return json;
+    }
+
+    private List<String> jsonArrayToList(JSONArray jsonArray) {
+        List<String> list = new ArrayList<>();
+        for (int i = 0; i < jsonArray.length(); i++) {
+            list.add(jsonArray.getString(i));
+        }
+        return list;
     }
 }
