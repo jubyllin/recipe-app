@@ -1,7 +1,17 @@
 package ui;
 
 import javax.swing.*;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.awt.*;
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.nio.file.Files;
+
 import model.Recipe;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +36,8 @@ public class MainGUI extends JFrame {
 
         initPanels();
         initTabs();
+        setJMenuBar(createMenuBar());
+
 
         add(tabbedPane, BorderLayout.CENTER);
 
@@ -62,6 +74,74 @@ public class MainGUI extends JFrame {
         groceryListPanel.setBackground(new Color(227, 242, 253)); // Light blue
 
         recipePanel.add(createDeleteButtonPanel(), BorderLayout.SOUTH);
+    }
+
+    // MODIFIES: this
+    // EFFECTS: Adds file -> Save/Load menu to the app
+    private JMenuBar createMenuBar() {
+        JMenuBar menuBar = new JMenuBar();
+        JMenu fileMenu = new JMenu("File");
+
+        JMenuItem saveItem = new JMenuItem("📌 Save");
+        saveItem.addActionListener(e -> handleSave());
+
+        JMenuItem loadItem = new JMenuItem("📂 Load");
+        loadItem.addActionListener(e -> handleLoad());
+
+        fileMenu.add(saveItem);
+        fileMenu.add(loadItem);
+        menuBar.add(fileMenu);
+
+        return menuBar;
+    }
+
+    // EFFECTS: Write the current recipeCollection to a file as JSON
+    private void handleSave() {
+        JFileChooser fileChooser = new JFileChooser();
+        int result = fileChooser.showSaveDialog(this);
+
+        if (result == JFileChooser.APPROVE_OPTION) {
+            File file = fileChooser.getSelectedFile();
+            JSONArray data = new JSONArray();
+            for (Recipe recipe : recipeCollection) {
+                data.put(recipe.toJson());
+            }
+            try (PrintWriter writer = new PrintWriter(file)) {
+                writer.write(data.toString(2));
+                JOptionPane.showMessageDialog(this, "Saved successfully!");
+            } catch (IOException ex) {
+                JOptionPane.showMessageDialog(this, "Save failed: " + ex.getMessage());
+            }
+        }
+    }
+
+    // MODIFIES: this
+    // EFFECTS: Load recipes from the file and update display
+    private void handleLoad() {
+        JFileChooser fileChooser = new JFileChooser();
+        int result = fileChooser.showOpenDialog(this);
+
+        if (result == JFileChooser.APPROVE_OPTION) {
+            File file = fileChooser.getSelectedFile();
+            try {
+                String content = new String(Files.readAllBytes(file.toPath()));
+                JSONArray data = new JSONArray(content);
+
+                recipeCollection.clear();
+                recipeListModel.clear();
+
+                for (int i = 0; i < data.length(); i++) {
+                    JSONObject json = data.getJSONObject(i);
+                    Recipe recipe = new Recipe(json);
+                    recipeCollection.add(recipe);
+                    recipeListModel.addElement(recipe.getName());
+                }
+
+                JOptionPane.showMessageDialog(this, "Loaded successfully!");
+            } catch (IOException | JSONException ex) {
+                JOptionPane.showMessageDialog(this, "Load failed: " + ex.getMessage());
+            }
+        }
     }
 
     // MODIFIES: this
