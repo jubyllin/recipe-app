@@ -60,6 +60,8 @@ public class MainGUI extends JFrame {
 
         groceryListPanel = new JPanel();
         groceryListPanel.setBackground(new Color(227, 242, 253)); // Light blue
+
+        recipePanel.add(createDeleteButtonPanel(), BorderLayout.SOUTH);
     }
 
     // MODIFIES: this
@@ -238,6 +240,42 @@ public class MainGUI extends JFrame {
 
         formPanel.add(new JLabel()); 
         formPanel.add(addButton);
+    }
+
+    // MODIFIES: this
+    // EFFECTS: Removes the selected recipe from the collection and updates the list
+    private JPanel createDeleteButtonPanel() {
+        JPanel panel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        panel.setBackground(new Color(255, 236, 239));  
+
+        JButton deleteButton = new JButton("Delete Recipe");
+
+        deleteButton.addActionListener(e -> {
+            int selectedIndex = recipeList.getSelectedIndex();
+            if (selectedIndex == -1) {
+                JOptionPane.showMessageDialog(this,
+                        "Please select a recipe to delete.",
+                        "No Selection",
+                        JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
+            String recipeName = recipeListModel.get(selectedIndex);
+
+            // Remove from model (recipeCollection)
+            recipeCollection.removeIf(r -> r.getName().equals(recipeName));
+
+            // Remove from JList
+            recipeListModel.remove(selectedIndex);
+
+            JOptionPane.showMessageDialog(this,
+                    "Deleted recipe: " + recipeName,
+                    "Deleted",
+                    JOptionPane.INFORMATION_MESSAGE);
+        });
+
+        panel.add(deleteButton);
+        return panel;
     }
 
 

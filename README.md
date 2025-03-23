@@ -4,7 +4,6 @@ The *Recipe Manager* is a desktop application that allows users to manage recipe
 ## User stories
 - As a user, I want to be able to add recipes, including name, category(cuisine or meal type), ingredients required, and the preparation    steps in the recipe collection.
 - As a user, I want to be able to delete recipes.
-- As a user, I want to be able to upload multiple images to recipes.
 - As a user, I want to be able to view my recipe collections.
 - As a user, I want to be able to select a recipe from my collection and view its details.
 - As a user, I want to be able to add and delete meals to customize my meal plan.
