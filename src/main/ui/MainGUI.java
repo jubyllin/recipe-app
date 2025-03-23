@@ -2,6 +2,9 @@ package ui;
 
 import javax.swing.*;
 import java.awt.*;
+import model.Recipe;
+import java.util.ArrayList;
+import java.util.List;
 
 // Represents the main GUI window for the application.
 public class MainGUI extends JFrame {
@@ -9,6 +12,8 @@ public class MainGUI extends JFrame {
     private JPanel recipePanel;
     private JPanel mealPlanPanel;
     private JPanel groceryListPanel;
+    private List<Recipe> recipeCollection = new ArrayList<>();
+
 
     public MainGUI() {
         super("👩🏻‍🍳 My Recipe App 👩🏻‍🍳");
@@ -53,44 +58,128 @@ public class MainGUI extends JFrame {
     }
 
 
-
-    // EFFECTs: returns a JPanel containing fields and a button for recipe input
+    // MODIFIES: this
+    // EFFECTs: Returns a JPanel containing fields and a button for recipe input
     private JPanel createAddRecipeForm() {
         JPanel formPanel = new JPanel();
         formPanel.setBackground(new Color(255, 236, 239));
         formPanel.setLayout(new GridLayout(5, 2, 10, 10));
         formPanel.setBorder(BorderFactory.createTitledBorder("Add a New Recipe"));
 
-        JLabel nameLabel = new JLabel("Name:");
         JTextField nameField = new JTextField();
-
-        JLabel categoryLabel = new JLabel("Category:");
         JTextField categoryField = new JTextField();
-
-        JLabel ingredientsLabel = new JLabel("Ingredients:");
         JTextArea ingredientsArea = new JTextArea(3, 20);
-        JScrollPane ingredientsScroll = new JScrollPane(ingredientsArea);
-
-        JLabel stepsLabel = new JLabel("Steps:");
         JTextArea stepsArea = new JTextArea(3, 20);
-        JScrollPane stepsScroll = new JScrollPane(stepsArea);
+        JButton addButton = new JButton("🍰 Add Recipe");
 
-        JButton addButton = new JButton("Add Recipe");
+        setupAddRecipeButton(addButton, nameField, categoryField, ingredientsArea, stepsArea);
 
-
-        formPanel.add(nameLabel);
-        formPanel.add(nameField);
-        formPanel.add(categoryLabel);
-        formPanel.add(categoryField);
-        formPanel.add(ingredientsLabel);
-        formPanel.add(ingredientsScroll);
-        formPanel.add(stepsLabel);
-        formPanel.add(stepsScroll);
-        formPanel.add(new JLabel()); 
-        formPanel.add(addButton);
-
+        addFieldsToForm(formPanel, nameField, categoryField, ingredientsArea, stepsArea, addButton);
         return formPanel;
     }
+
+    // MODIFIES: this
+    // EFFECTS: Creates and adds a recipe
+    private void setupAddRecipeButton(JButton button, JTextField nameField, JTextField categoryField,
+                                  JTextArea ingredientsArea, JTextArea stepsArea) {
+        button.addActionListener(e -> {
+            handleAddRecipe(nameField, categoryField, ingredientsArea, stepsArea);
+        });
+    }
+
+    // modifies: this
+    // effects: Creates a new Recipe, adds ingredients and steps, and stores it in recipeCollection
+    private void handleAddRecipe(JTextField nameField, JTextField categoryField,
+                                JTextArea ingredientsArea, JTextArea stepsArea) {
+        String name = nameField.getText().trim();
+        String category = categoryField.getText().trim();
+    
+
+        if (name.isEmpty() || category.isEmpty()) {
+            showMissingFieldWarning();
+            return;
+        }
+
+        Recipe newRecipe = createRecipeFromInput(name, category, ingredientsArea.getText(), stepsArea.getText());
+
+        recipeCollection.add(newRecipe);
+
+
+        JOptionPane.showMessageDialog(this,
+                "Recipe added: " + newRecipe.getName(),
+                "Success",
+                JOptionPane.INFORMATION_MESSAGE);
+
+        clearRecipeForm(nameField, categoryField, ingredientsArea, stepsArea);
+
+    }
+
+
+    // EFFECTS: Returns a Recipe with ingredients and steps
+    private Recipe createRecipeFromInput(String name, String category,
+            String ingredientsText, String stepsText) {
+        Recipe recipe = new Recipe(name, category);
+
+        String[] ingredients = ingredientsText.trim().split("\n");
+        for (String ingredient : ingredients) {
+            if (!ingredient.isBlank()) {
+                recipe.addIngredient(ingredient.trim());
+            }
+        }
+
+        String[] steps = stepsText.trim().split("\n");
+        for (String step : steps) {
+            if (!step.isBlank()) {
+                recipe.addStep(step.trim());
+            }
+        }
+
+        return recipe;
+    }
+
+
+    // EFFECTS: Empties all input components
+    private void clearRecipeForm(JTextField nameField, JTextField categoryField,
+            JTextArea ingredientsArea, JTextArea stepsArea) {
+        nameField.setText("");
+        categoryField.setText("");
+        ingredientsArea.setText("");
+        stepsArea.setText("");
+    }
+
+
+
+
+    // EFFECTS: Displays a warning message.
+    private void showMissingFieldWarning() {
+        JOptionPane.showMessageDialog(this,
+                "Please fill in at least name and category.",
+                "Missing Info",
+                JOptionPane.WARNING_MESSAGE);
+    }
+
+
+    // MODIFIES: formPanel
+    // EFFECTS: Adds input fields and labels to the form
+    private void addFieldsToForm(JPanel formPanel, JTextField nameField, JTextField categoryField,
+                             JTextArea ingredientsArea, JTextArea stepsArea, JButton addButton) {
+        formPanel.add(new JLabel("Name:"));
+        formPanel.add(nameField);
+
+        formPanel.add(new JLabel("Category:"));
+        formPanel.add(categoryField);
+
+        formPanel.add(new JLabel("Ingredients (one per line):"));
+        formPanel.add(new JScrollPane(ingredientsArea));
+
+        formPanel.add(new JLabel("Steps (one per line):"));
+        formPanel.add(new JScrollPane(stepsArea));
+
+        formPanel.add(new JLabel()); 
+        formPanel.add(addButton);
+    }
+
+
 
 
     public static void main(String[] args) {
