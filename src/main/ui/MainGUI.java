@@ -43,12 +43,55 @@ public class MainGUI extends JFrame {
         recipePanel.setBackground(new Color(255, 236, 239));  // Light pink
         recipePanel.setLayout(new BorderLayout());
 
+        recipePanel.add(createAddRecipeForm(), BorderLayout.NORTH);
+
         mealPlanPanel = new JPanel();
         mealPlanPanel.setBackground(new Color(255, 249, 196));  // Light yellow
 
         groceryListPanel = new JPanel();
         groceryListPanel.setBackground(new Color(227, 242, 253)); // Light blue
     }
+
+
+
+    // EFFECTs: returns a JPanel containing fields and a button for recipe input
+    private JPanel createAddRecipeForm() {
+        JPanel formPanel = new JPanel();
+        formPanel.setBackground(new Color(255, 236, 239));
+        formPanel.setLayout(new GridLayout(5, 2, 10, 10));
+        formPanel.setBorder(BorderFactory.createTitledBorder("Add a New Recipe"));
+
+        JLabel nameLabel = new JLabel("Name:");
+        JTextField nameField = new JTextField();
+
+        JLabel categoryLabel = new JLabel("Category:");
+        JTextField categoryField = new JTextField();
+
+        JLabel ingredientsLabel = new JLabel("Ingredients:");
+        JTextArea ingredientsArea = new JTextArea(3, 20);
+        JScrollPane ingredientsScroll = new JScrollPane(ingredientsArea);
+
+        JLabel stepsLabel = new JLabel("Steps:");
+        JTextArea stepsArea = new JTextArea(3, 20);
+        JScrollPane stepsScroll = new JScrollPane(stepsArea);
+
+        JButton addButton = new JButton("Add Recipe");
+
+
+        formPanel.add(nameLabel);
+        formPanel.add(nameField);
+        formPanel.add(categoryLabel);
+        formPanel.add(categoryField);
+        formPanel.add(ingredientsLabel);
+        formPanel.add(ingredientsScroll);
+        formPanel.add(stepsLabel);
+        formPanel.add(stepsScroll);
+        formPanel.add(new JLabel()); 
+        formPanel.add(addButton);
+
+        return formPanel;
+    }
+
 
     public static void main(String[] args) {
         new MainGUI();
