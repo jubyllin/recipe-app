@@ -65,7 +65,14 @@ public class MainGUI extends JFrame {
     // MODIFIES: this
     // EFFECTS: Sets up a JList of recipe names with scroll support
     private JScrollPane createRecipeListPanel() {
+        recipeListModel = new DefaultListModel<>();
+        recipeList = new JList<>(recipeListModel);
+        recipeList.setVisibleRowCount(10);
+        recipeList.setFixedCellHeight(30);
+        recipeList.setBackground(new Color(255, 250, 250));  // light pink white
+        recipeList.setBorder(BorderFactory.createTitledBorder("My Recipes"));
 
+        return new JScrollPane(recipeList);
     }
 
     // MODIFIES: this
