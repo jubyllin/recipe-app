@@ -120,6 +120,7 @@ public class MainGUI extends JFrame {
         Recipe newRecipe = createRecipeFromInput(name, category, ingredientsArea.getText(), stepsArea.getText());
 
         recipeCollection.add(newRecipe);
+        recipeListModel.addElement(newRecipe.getName());
 
 
         JOptionPane.showMessageDialog(this,
