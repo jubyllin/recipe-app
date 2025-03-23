@@ -18,7 +18,7 @@ public class MyRecipeApp {
     private Scanner input;
     private static final String SAVE_FILE = "./data/recipeData.json";
 
-    // Initializes the appplication.
+    // Initializes the appplication
     public MyRecipeApp() {
         recipeCollection = new RecipeCollection();
         groceryList = new GroceryList();

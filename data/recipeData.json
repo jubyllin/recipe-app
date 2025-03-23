@@ -1,22 +1,11 @@
 {
-    "groceryList": {"groceryItems": [
-        "egg",
-        "soy sauce",
-        "tomato"
-    ]},
+    "groceryList": {"groceryItems": []},
     "recipeCollection": {"recipes": [{
         "images": [],
-        "name": "curry",
-        "ingredients": [
-            "potato",
-            "carrot"
-        ],
-        "category": "japanese",
-        "steps": [
-            "1",
-            "2",
-            "3"
-        ]
+        "name": "3",
+        "ingredients": [],
+        "category": "e",
+        "steps": []
     }]},
-    "mealPlan": {"mealSchedule": {}}
+    "mealPlan": {"mealPlan": {}}
 }
