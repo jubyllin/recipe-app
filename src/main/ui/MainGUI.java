@@ -13,6 +13,9 @@ public class MainGUI extends JFrame {
     private JPanel mealPlanPanel;
     private JPanel groceryListPanel;
     private List<Recipe> recipeCollection = new ArrayList<>();
+    private JList<String> recipeList;
+    private DefaultListModel<String> recipeListModel;
+
 
 
     public MainGUI() {
@@ -49,6 +52,8 @@ public class MainGUI extends JFrame {
         recipePanel.setLayout(new BorderLayout());
 
         recipePanel.add(createAddRecipeForm(), BorderLayout.NORTH);
+        recipePanel.add(createRecipeListPanel(), BorderLayout.CENTER);  
+
 
         mealPlanPanel = new JPanel();
         mealPlanPanel.setBackground(new Color(255, 249, 196));  // Light yellow
@@ -57,6 +62,11 @@ public class MainGUI extends JFrame {
         groceryListPanel.setBackground(new Color(227, 242, 253)); // Light blue
     }
 
+    // MODIFIES: this
+    // EFFECTS: Sets up a JList of recipe names with scroll support
+    private JScrollPane createRecipeListPanel() {
+
+    }
 
     // MODIFIES: this
     // EFFECTs: Returns a JPanel containing fields and a button for recipe input
@@ -70,7 +80,7 @@ public class MainGUI extends JFrame {
         JTextField categoryField = new JTextField();
         JTextArea ingredientsArea = new JTextArea(3, 20);
         JTextArea stepsArea = new JTextArea(3, 20);
-        JButton addButton = new JButton("🍰 Add Recipe");
+        JButton addButton = new JButton("Add Recipe");
 
         setupAddRecipeButton(addButton, nameField, categoryField, ingredientsArea, stepsArea);
 
