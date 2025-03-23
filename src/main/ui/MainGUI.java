@@ -72,7 +72,18 @@ public class MainGUI extends JFrame {
         recipeList.setBackground(new Color(255, 250, 250));  // light pink white
         recipeList.setBorder(BorderFactory.createTitledBorder("My Recipes"));
 
+        recipeList.addListSelectionListener(e -> {
+            if (!e.getValueIsAdjusting()) {
+                String selectedName = recipeList.getSelectedValue();
+                Recipe selected = findRecipeByName(selectedName);
+                if (selected != null) {
+                    showRecipeDetails(selected);
+                }
+            }
+        });
+
         return new JScrollPane(recipeList);
+
     }
 
     // MODIFIES: this
@@ -104,8 +115,8 @@ public class MainGUI extends JFrame {
         });
     }
 
-    // modifies: this
-    // effects: Creates a new Recipe, adds ingredients and steps, and stores it in recipeCollection
+    // MODIFIES: this
+    // EFFECTS: Creates a new Recipe, adds ingredients and steps, and stores it in recipeCollection
     private void handleAddRecipe(JTextField nameField, JTextField categoryField,
                                 JTextArea ingredientsArea, JTextArea stepsArea) {
         String name = nameField.getText().trim();
@@ -166,6 +177,38 @@ public class MainGUI extends JFrame {
     }
 
 
+    // MODIFIES: this
+    // EFFECTS: Returns the searched Recipe, or null if not found
+    private Recipe findRecipeByName(String name) {
+        for (Recipe r : recipeCollection) {
+            if (r.getName().equals(name)) {
+                return r;
+            }
+        }
+        return null;
+    }
+
+
+    // MODIFIES: this
+    // EFFECTS: Shows the recipe details, including ingredients and steps
+    private void showRecipeDetails(Recipe recipe) {
+        StringBuilder message = new StringBuilder();
+        message.append("Name: ").append(recipe.getName()).append("\n");
+        message.append("Category: ").append(recipe.getCategory()).append("\n\n");
+    
+        message.append("Ingredients:\n");
+        for (String i : recipe.getIngredients()) {
+            message.append("• ").append(i).append("\n");
+        }
+    
+        message.append("Steps:\n");
+        for (String s : recipe.getSteps()) {
+            message.append("→ ").append(s).append("\n");
+        }
+    
+        JOptionPane.showMessageDialog(this, message.toString(), "📖 Recipe Details", JOptionPane.INFORMATION_MESSAGE);
+    }
+    
 
 
     // EFFECTS: Displays a warning message.
