@@ -28,3 +28,17 @@ Sun Mar 30 23:29:09 PDT 2025
 Meal added: curry on Monday
 Sun Mar 30 23:29:10 PDT 2025
 Grocery item added: cabbage
+
+## Phase 4: Task 3
+If I had more time, one important refactoring task would be to abstract and unify shared behaviors throughout the model. For example, RecipeCollection, MealPlan, and GroceryList all keep a list and have add/remove/clear operations. These can be refactored into a shared abstract class or interface, such as ItemCollection<T>, to reduce code duplication and improve maintainability. I could also create a Clearable interface that includes a common clear() function.
+In addition, I would consider adding a RecipeReference function, such as putting an image or link to each recipe to help people cook.  From a UI/UX standpoint, I would include more visual elements to better showcase user data, such as displaying recipe categories as interactive charts or a calendar-based meal planner. Finally, adding more "humanized" actions such as "Clear All" buttons and visual confirmations (eg. animations or toast popups) would enhance the user experience without altering the app's fundamental functionality.
+
+
+
+
+
+
+
+
+
+
