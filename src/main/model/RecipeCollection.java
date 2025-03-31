@@ -8,6 +8,7 @@ import java.util.Set;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.junit.platform.reporting.shadow.org.opentest4j.reporting.events.root.Event;
 
 import persistence.Writable;
 
@@ -33,12 +34,15 @@ public class RecipeCollection implements Writable {
     // EFFECTS: Adds the recipe to the collection if it does not exists.
     public void addRecipe(Recipe recipe) {
         recipes.add(recipe);
+        EventLog.getInstance().logEvent(new Event("Recipe removed: " + recipe.getName()));
     }
 
     // MODIFIES: this
     // EFFECTS: Removes the recipe from the collection if it exists.
     public void removeRecipe(Recipe recipe) {
-        recipes.remove(recipe);
+        if (recipes.remove(recipe)) {
+            EventLog.getInstance().logEvent(new Event("Recipe removed: " + recipe.getName()));
+        }
 
     }
 

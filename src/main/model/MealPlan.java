@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.junit.platform.reporting.shadow.org.opentest4j.reporting.events.root.Event;
 
 import persistence.Writable;
 
@@ -41,13 +42,19 @@ public class MealPlan implements Writable {
             mealPlan.put(day, new ArrayList<>());
         }
         mealPlan.get(day).add(recipe);
+        EventLog.getInstance().logEvent(new Event("Meal added to meal plan: " + recipe.getName()));
+
     }
 
     //MODIFIES: this
     //EFFECTS: Removes a specified meal from the day in the meal plan.
     public void removeSpecificMeal(String day, Recipe recipe) {
         if (mealPlan.containsKey(day)) {
-            mealPlan.get(day).remove(recipe);
+            boolean removed = mealPlan.get(day).remove(recipe);
+            if (removed) {
+                EventLog.getInstance().logEvent(
+                    new Event("Recipe removed from " + day + " in meal plan: " + recipe.getName()));
+            }
         }
     }
         
@@ -55,6 +62,7 @@ public class MealPlan implements Writable {
     //EFFECTS: Removes all meals assigned to the specified day.
     public void removeMeal(String day) {
         mealPlan.remove(day);
+        EventLog.getInstance().logEvent(new Event("Meal removed from meal plan: " + recipe.getName()));
     }
 
 

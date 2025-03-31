@@ -5,6 +5,7 @@ import java.util.Set;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.junit.platform.reporting.shadow.org.opentest4j.reporting.events.root.Event;
 
 import persistence.Writable;
 
@@ -31,12 +32,16 @@ public class GroceryList implements Writable {
     //EFFECTS: Adds the item to the list if it does not exist.
     public void addItem(String item) {
         groceryItems.add(item);
+        EventLog.getInstance().logEvent(new Event("Item added to grocery list: " + item));
+
     }
 
     //MODIFIES: this
     //EFFECTS: Removes the item from the grocery list if it exists.
     public void removeItem(String item) {
-        groceryItems.remove(item);
+        if (items.remove(item)) {
+            EventLog.getInstance().logEvent(new Event("Item removed from grocery list: " + item));
+        }
     }
 
     //EFFECTS: Check if the grocery list contains the specified item. Returns true
@@ -56,6 +61,7 @@ public class GroceryList implements Writable {
     //EFFECTS: Removes all item from grocery list.
     public void clearList() {
         groceryItems.clear();
+        EventLog.getInstance().logEvent(new Event("Grocery list cleared."));
     }
 
     public Set<String> getGroceryItems() {
