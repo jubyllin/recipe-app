@@ -8,7 +8,6 @@ import java.util.Set;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.junit.platform.reporting.shadow.org.opentest4j.reporting.events.root.Event;
 
 import persistence.Writable;
 

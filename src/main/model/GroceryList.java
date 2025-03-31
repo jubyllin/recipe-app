@@ -5,9 +5,9 @@ import java.util.Set;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.junit.platform.reporting.shadow.org.opentest4j.reporting.events.root.Event;
 
 import persistence.Writable;
+
 
 //Represents a shopping list of ingredients
 public class GroceryList implements Writable {
@@ -39,7 +39,7 @@ public class GroceryList implements Writable {
     //MODIFIES: this
     //EFFECTS: Removes the item from the grocery list if it exists.
     public void removeItem(String item) {
-        if (items.remove(item)) {
+        if (groceryItems.remove(item)) {
             EventLog.getInstance().logEvent(new Event("Item removed from grocery list: " + item));
         }
     }
