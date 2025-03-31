@@ -20,4 +20,11 @@ The *Recipe Manager* is a desktop application that allows users to manage recipe
 - You can save the state of my application by clicking the 'File' button then '📌 Save' button to the right of the "Recipes" tab.
 - You can reload the state of my application by clicking the 'file' button then the '📂 Load' button on the right-hand side of the Recipes tab.Selecting a saved file will restore all previously saved recipes, meal plan, and grocery list.
 
-
+## Phase 4: Task 2
+--- Event Log ---
+Sun Mar 30 23:28:56 PDT 2025
+Recipe added: curry
+Sun Mar 30 23:29:09 PDT 2025
+Meal added: curry on Monday
+Sun Mar 30 23:29:10 PDT 2025
+Grocery item added: cabbage

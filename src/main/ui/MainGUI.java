@@ -24,6 +24,11 @@ import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+
+import model.Event;
+import model.EventLog;
 
 
 // Represents the main GUI window for the application.
@@ -55,9 +60,21 @@ public class MainGUI extends JFrame {
 
         add(tabbedPane, BorderLayout.CENTER);
 
+
         pack();
         setLocationRelativeTo(null);  
         setVisible(true);
+
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                System.out.println("\n--- Event Log ---");
+                for (Event event : EventLog.getInstance()) {
+                    System.out.println(event);
+                }
+                System.exit(0);
+            }
+        });
     }
     
     // MODIFIES: this
@@ -287,6 +304,9 @@ public class MainGUI extends JFrame {
 
         clearRecipeForm(nameField, categoryField, ingredientsArea, stepsArea);
 
+        EventLog.getInstance().logEvent(new Event("Recipe added: " + newRecipe.getName()));
+
+
     }
 
 
@@ -472,13 +492,14 @@ public class MainGUI extends JFrame {
         DefaultListModel<String> model = new DefaultListModel<>();
         JList<String> list = new JList<>(model);
         panel.add(new JScrollPane(list), BorderLayout.CENTER);
-        panel.add(createListInputPanel(addButtonText, deleteButtonText, onAdd, model, list), BorderLayout.SOUTH);
+        panel.add(createListInputPanel(title, addButtonText, deleteButtonText, onAdd, model, list), BorderLayout.SOUTH);
 
         bindModelAndList(title, model, list);
         return panel;
     }
 
     private JPanel createListInputPanel(
+            String title,
             String addButtonText,
             String deleteButtonText,
             Consumer<String> onAdd,
@@ -495,13 +516,22 @@ public class MainGUI extends JFrame {
             if (!input.isEmpty()) {
                 onAdd.accept(input);
                 inputField.setText("");
+
+                if (input.contains("Grocery")) {
+                    EventLog.getInstance().logEvent(new Event("Grocery item added: " + input));
+                }
             }
         });
 
         deleteButton.addActionListener(e -> {
             int selected = list.getSelectedIndex();
             if (selected != -1) {
+                String removed = model.get(selected);
                 model.remove(selected);
+        
+                if (title.contains("Grocery")) {
+                    EventLog.getInstance().logEvent(new Event("Grocery item removed: " + removed));
+                }            
             }
         });
 
@@ -571,6 +601,9 @@ public class MainGUI extends JFrame {
             mealPlanModel.addElement(day + ": " + meal);
             mealField.setText("");
         }
+
+        EventLog.getInstance().logEvent(new Event("Meal added: " + meal + " on " + day));
+
     }
 
     // EFFECTS: Remove selected meals from the meal plan.
@@ -578,8 +611,14 @@ public class MainGUI extends JFrame {
         int selected = mealPlanJList.getSelectedIndex();
         if (selected != -1) {
             mealPlanModel.remove(selected);
+            EventLog.getInstance().logEvent(
+                    new Event("Meal removed:" + selected));
         }
+
     }
+
+    
+    
 
     public static void main(String[] args) {
         new MainGUI();
